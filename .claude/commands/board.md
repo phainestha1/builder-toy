@@ -4,7 +4,7 @@ description: 프로젝트 현황을 한 화면으로 요약한다 (Phase, 작업
 
 아래를 모아서 짧게 요약합니다. 파일은 고치지 않습니다.
 
-1. **Phase:** `_docs/PLAN.md` 9절에서 현재 Phase와 다음 ⛳ 게이트를 찾습니다. 체크되지 않은 첫 항목이 기준입니다.
+1. **Phase:** `docs/board.md` 작업 표에서 `done`이 아닌 첫 작업의 Phase가 현재 Phase입니다. 그 Phase의 ⛳ 게이트 내용은 `_docs/PLAN.md` 9절에서 읽습니다. (PLAN은 고정 문서라 체크박스는 보지 않습니다.)
 2. **작업 보드:** `docs/board.md`에서 상태별 작업 수를 셉니다. `doing`, `review`, `blocked` 작업은 목록으로 보여 줍니다. 대기 중인 계약 변경 요청도 보여 줍니다.
 3. **세션:** `HERDR_ENV=1`이면 `herdr agent list`를 실행합니다. 이름과 pane별 상태(idle / working / blocked / done)를 보여 줍니다.
 4. **git:**

@@ -1,6 +1,8 @@
 # 아정당 AI Builder 온보딩 연습 프로젝트 — 플랜
 
-> 작성일: 2026-10-05 · 최종 수정: 2026-10-05 · 상태: **Phase A 완료 (CLAUDE.md·.claude 체계 포함), Phase B 대기**
+> 작성일: 2026-10-05 · **2026-10-05 고정 (Phase B 완료 시점)**
+> 이 문서는 프로젝트의 뼈대를 잡은 최초 기록입니다. **더 이상 고치지 않습니다.** 체크박스와 상태도 갱신하지 않습니다.
+> 진척 기록과 특이사항은 [Notion PRD](https://app.notion.com/p/3f0cd1688860812cbcf3e077844dfafd)의 "진행 기록"에, 작업 상태는 `docs/board.md`에, 확정한 결정은 `docs/decisions/`에 남깁니다.
 > 근거 자료: `ai_builder_jd.pdf`(채용 공고), `ajd_ai_builder_case.pdf`(이사 서비스 AX 도입기, 아정당 기술 블로그)
 
 ---

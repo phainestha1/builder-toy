@@ -25,7 +25,7 @@
 | T-A2 | A | 작업 보드 골격 | Orchestrator | done | 작업 표, 계약 변경 요청 표, 규칙 포함 | — | 2026-10-05 사용자 확인 |
 | T-A3 | A | 역할 지침 3개 초안 | Orchestrator | done | orchestrator / builder / checker 지침 작성 | — | 2026-10-05 사용자 확인 |
 | T-A4 | A | 루트 CLAUDE.md, `.claude` 체계(skills, agents, commands, rules, hooks) | Orchestrator | done | 훅 모의 입력 테스트 통과, 사용자 확인 | — | 2026-10-05 사용자 확인 |
-| T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | review | PRD 승인, `docs/prd.md`에 링크와 요약 | — | Notion PRD 생성(초안), ⛳ PRD 승인 대기 |
+| T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | done | PRD 승인, `docs/prd.md`에 링크와 요약 | — | 2026-10-05 ⛳ PRD 승인 |
 | T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | todo | 화면 설계 승인, `docs/screens.md` 기록 | — | |
 | T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Orchestrator | todo | `docs/glossary.md`, `docs/decisions/` | — | |
 | T-D2 | D | 이벤트·Port 타입 작성, `contract-v1` 태그 | Orchestrator | todo | 타입 검사 통과, 사용자 승인 | — | |
@@ -45,3 +45,4 @@
 |---|---|---|
 | 2026-10-05 | 원격 저장소 `phainestha1/builder-toy`(private) 사용 | 사용자 지정 |
 | 2026-10-05 | M0 기획은 인터뷰를 생략하고 가정 기반 데모 수준으로 진행 | 사용자 지시: 사이클을 끝까지 한 번 돌리는 데 집중 |
+| 2026-10-05 | `_docs/PLAN.md`를 최초 기록으로 고정. 진척 기록과 특이사항은 Notion PRD "진행 기록"에 남김 | 사용자 지시 |

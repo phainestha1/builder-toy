@@ -7,21 +7,18 @@
 ## 먼저 읽을 것 (진실의 원천)
 | 무엇 | 어디 | 누가 고치나 |
 |---|---|---|
-| 전체 플랜, 결정, Phase | `_docs/PLAN.md` (7절 결정, 8절 운영, 9절 액션 플랜) | Orchestrator (사용자 승인) |
+| 최초 플랜 (고정, 참고용) | `_docs/PLAN.md` (7절 결정, 8절 운영, 9절 Phase와 게이트) | 아무도 고치지 않음 |
+| 진척 기록, 특이사항 | [Notion PRD](https://app.notion.com/p/3f0cd1688860812cbcf3e077844dfafd) "진행 기록" 섹션 | Orchestrator |
 | 작업, 담당, 상태, 계약 변경 요청 | `docs/board.md` | Orchestrator만 |
 | 용어 (유비쿼터스 언어) | `docs/glossary.md` | 계약 — main에서만 |
 | 확정한 결정 (ADR) | `docs/decisions/` | Orchestrator |
 | 작업별 설계 체크리스트 | `docs/checklists/<작업ID>.md` | 담당 Builder |
 | 기획 / 화면 | `docs/prd.md` (Notion) / `docs/screens.md` (Figma) | Orchestrator |
 
-PLAN과 보드가 이 파일과 다르면 **PLAN과 보드가 맞습니다.** 이 파일을 고쳐 달라고 알려 주세요.
+보드나 `docs/decisions/`가 이 파일과 다르면 **보드와 decisions가 맞습니다.** 이 파일을 고쳐 달라고 알려 주세요. PLAN은 최초 기록이라, 이후 결정과 다르면 이후 결정을 따릅니다.
 
 ## 현재 상태
-- **Phase:** A 완료, `.claude` 체계 초안 작성. 다음은 Phase B (`ajd:planning`으로 M0 기획)
-- **코드:** 아직 없음 (Phase E에서 스캐폴딩)
-- **계약:** 아직 없음 (Phase D에서 `contract-v1`)
-
-정확한 현재 위치는 `/board`로 확인합니다.
+이 파일에는 진척을 적지 않습니다. 현재 위치는 `/board`로, 지나온 경과와 특이사항은 Notion PRD의 "진행 기록"으로 확인합니다.
 
 ## 세션과 역할
 세션이 시작되면 `session-context.sh` 훅이 브랜치와 진행 중인 작업을 알려 줍니다. 역할이 정해지지 않았으면 `/role <이름>`으로 지침을 불러옵니다.
