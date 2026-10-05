@@ -9,3 +9,16 @@ import { registerSubscriptions } from "./subscriptions";
 registerSubscriptions(eventBus, { experiment, reward });
 
 export { application, catalog, eventBus, experiment, reward };
+
+// 라우트와 화면이 쓰는 타입. src/app은 BC의 ports·domain을 직접 가져오지 않는다
+export type {
+  ApplicationRejectionReason,
+  EstimateInput,
+  NormalizedEstimateInput,
+  PlanComparisonCard,
+  PlanSpeed,
+  PreferredContactTime,
+  RewardCalculationResult,
+  RewardEstimateView,
+  SubmitApplicationResult,
+} from "./types";
