@@ -31,3 +31,11 @@ test-results/
 
 # claude local settings
 .claude/settings.local.json
+
+# local database folder
+data/*
+!data/.gitkeep
+
+# next
+next-env.d.ts
+*.tsbuildinfo
