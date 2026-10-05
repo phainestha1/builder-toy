@@ -1,6 +1,6 @@
 # 화면 설계 — 아정당 미니 (M1)
 
-- **원본:** [Figma — 아정당 미니 — M1 화면 설계](https://www.figma.com/design/VKhka0fEffMIDhOA0hgfHc) (페이지 `M1 화면 설계`, 보드 하나에 화면 5개)
+- **원본:** [Figma — 아정당 미니 — M1 화면 설계](https://www.figma.com/design/VKhka0fEffMIDhOA0hgfHc) (페이지 2개: `고객 화면` — 01~04, `상담원 어드민` — 05)
 - **입력:** [Notion PRD](https://app.notion.com/p/3f0cd1688860812cbcf3e077844dfafd)
 - **작성:** 2026-10-05, `ajd:design` (T-C1)
 - **주의:** 데모 수준입니다. 요금제, 금액, 고객 정보는 모두 예시 데이터입니다.
