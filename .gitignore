@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# build output
+.next/
+out/
+dist/
+
+# local database
+*.db
+*.db-journal
+*.sqlite
+
+# env
+.env
+.env.*
+!.env.example
+
+# test output
+coverage/
+playwright-report/
+test-results/
+
+# worktrees
+.worktrees/
+
+# os / editor
+.DS_Store
+.vscode/
+.idea/
+
+# claude local settings
+.claude/settings.local.json
