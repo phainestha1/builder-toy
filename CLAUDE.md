@@ -26,8 +26,10 @@
 | 역할 | herdr | 위치 | 한 줄 요약 | 지침 |
 |---|---|---|---|---|
 | Orchestrator | `w3:p1` `orchestrator` | 원본 폴더, `docs/*`·`chore/*`·`contract/*` 브랜치 | 계획·계약·배정·PR 머지. 기능 코드는 안 씀 | `.claude/roles/orchestrator.md` |
-| Builder A / B | `w3:p5` `builder-a` / `w3:p6` `builder-b` | `feat/*` worktree | 배정받은 BC만 구현 | `.claude/roles/builder.md` |
-| Checker | `w3:p8` `checker` | 리뷰 대상 브랜치 | 독립 검증. 코드 수정 안 함 | `.claude/roles/checker.md` |
+| Builder A / B | `w3:p9` `builder-a` / 배정 때 생성 `builder-b` | `feat/*` worktree | 배정받은 BC만 구현 | `.claude/roles/builder.md` |
+| Checker | `w3:pA` `checker` | 리뷰용 worktree | 독립 검증. 코드 수정 안 함 | `.claude/roles/checker.md` |
+
+pane ID는 창을 옮기거나 다시 열면 바뀝니다. 세션끼리는 에이전트 이름으로 주고받고, 이 표의 pane ID는 참고용입니다.
 
 ## 작업 한 바퀴
 ```
@@ -50,6 +52,7 @@
   | Builder | `feat/a-<작업ID>`, `feat/b-<작업ID>` (worktree) | 기능 구현 |
   | Builder | `contract/<작업ID>` (worktree) | Orchestrator가 배정한 계약 작업만 (예: T-D1 도메인 설계) |
 - **작업 하나에 PR 하나.** 앞 PR에 의존하면 base를 앞 브랜치로 두고 쌓습니다.
+- **머지는 `/merge`로만 합니다.** 사용자가 GitHub에서 직접 머지하려면 먼저 Orchestrator에게 Checker 결과를 확인합니다.
 - **머지는 merge commit으로 합니다** (`gh pr merge --merge`). squash·rebase 머지와 force push는 쓰지 않습니다. 쌓인 PR과 Builder 브랜치가 깨지지 않게 하기 위해서입니다.
 - **`main`이 바뀌면** 작업 브랜치는 `git fetch origin && git merge origin/main`으로 따라갑니다. 이미 push한 브랜치는 rebase하지 않습니다.
 

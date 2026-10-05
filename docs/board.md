@@ -13,10 +13,10 @@
 ## 세션
 | 역할 | herdr pane | 에이전트 이름 | 작업 위치 | 상태 |
 |---|---|---|---|---|
-| Orchestrator | `w3:p1` | `orchestrator` | `main` | 활성 |
-| Builder A | `w3:p5` | `builder-a` | worktree `contract/t-d1` | T-D1 |
-| Builder B | `w3:p6` | `builder-b` | worktree (Phase F에서 생성) | 대기 |
-| Checker | `w3:p8` | `checker` | 리뷰 대상 브랜치 (읽기 전용) | 대기 |
+| Orchestrator | `w3:p1` | `orchestrator` | 원본 폴더 | 활성 |
+| Builder A | `w3:p9` | `builder-a` | worktree `contract-t-d1` | 대기 |
+| Builder B | — | `builder-b` | 없음 (작업 배정 때 worktree와 세션 생성) | 없음 |
+| Checker | `w3:pA` | `checker` | worktree `review-t-d1` (리뷰 대상 브랜치를 맞춰 씀) | 대기 |
 
 ## 작업
 | ID | Phase | 작업 | 담당 | 상태 | 완료 기준 | 검증 결과 | 비고 |
@@ -27,7 +27,7 @@
 | T-A4 | A | 루트 CLAUDE.md, `.claude` 체계(skills, agents, commands, rules, hooks) | Orchestrator | done | 훅 모의 입력 테스트 통과, 사용자 확인 | — | 2026-10-05 사용자 확인 |
 | T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | done | PRD 승인, `docs/prd.md`에 링크와 요약 | — | 2026-10-05 ⛳ PRD 승인 |
 | T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | done | 화면 설계 승인, `docs/screens.md` 기록 | — | 2026-10-05 ⛳ 화면 설계 승인 |
-| T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Builder A | doing | `docs/glossary.md`, `docs/design/event-storming.md`, `docs/decisions/0001-bounded-contexts.md` 작성, Checker 검증, 사용자 승인 | — | 계약 작업 예외로 `contract/t-d1` worktree에서 진행 |
+| T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Builder A | done | `docs/glossary.md`, `docs/design/event-storming.md`, `docs/decisions/0001-bounded-contexts.md` 작성, Checker 검증, 사용자 승인 | PASS (6차, `1d71fb1`) · 테스트 해당 없음 (문서 작업) | PR #6(검증 전 머지), #7. 1~5차 FAIL 후 6차 PASS. 승인은 사용자 위임으로 Orchestrator |
 | T-D2 | D | 이벤트·Port 타입 작성, `contract-v1` 태그 | Orchestrator | todo | 타입 검사 통과, 사용자 승인 | — | |
 | T-E1 | E | 스캐폴딩, `npm run check`, `.claude` 경로·명령 보정 | Orchestrator | todo | 훅 차단과 아키텍처 검사 실패를 직접 재현 | — | |
 | T-F1 | F | worktree 생성, 세션 재시작, 시범 작업 1개 | 전체 | todo | 작업 한 바퀴(PLAN 8.5) 완주 | — | |

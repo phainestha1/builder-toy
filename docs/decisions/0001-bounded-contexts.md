@@ -1,6 +1,6 @@
 # 0001. Bounded Context와 도메인 정책
 
-- 상태: 초안 (Checker 검증과 사용자 승인 전)
+- 상태: 확정 (2026-10-05 Checker 6차 PASS, 커밋 `1d71fb1`. 승인은 사용자 위임으로 Orchestrator)
 - 날짜: 2026-10-05 · 작업: T-D1
 - 논의와 대안: `docs/design/event-storming.md` · 용어: `docs/glossary.md`
 
