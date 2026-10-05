@@ -5,7 +5,7 @@ import styles from "../admin.module.css";
 
 export function LogoutButton() {
   return (
-    <button className={styles.button} type="button" onClick={() => signOut({ callbackUrl: "/admin/login" })}>
+    <button className={styles.linkButton} type="button" onClick={() => signOut({ callbackUrl: "/admin/login" })}>
       로그아웃
     </button>
   );

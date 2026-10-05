@@ -30,19 +30,6 @@
   background: #374151;
   color: #fff;
 }
-.main {
-  display: flex;
-  flex-direction: column;
-}
-.header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-}
 .content {
   padding: 24px;
 }
@@ -121,7 +108,7 @@
 }
 .workspace {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 360px;
   gap: 16px;
   align-items: start;
 }
@@ -155,11 +142,9 @@
   font-size: 12px;
 }
 .statusBadge {
-  font-size: 14px;
-  padding: 2px 8px;
+  font-size: 12px;
+  padding: 3px 8px;
   border-radius: 999px;
-  background: #e0e7ff;
-  color: #3730a3;
 }
 .panel {
   background: #fff;
@@ -178,23 +163,6 @@
   margin: 0 0 8px;
   font-size: 15px;
 }
-.dl {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 6px 8px;
-  margin: 0;
-  font-size: 14px;
-}
-.dl dt {
-  color: #6b7280;
-}
-.dl dd {
-  margin: 0;
-}
-.actions {
-  display: flex;
-  gap: 8px;
-}
 .button:disabled,
 .primaryButton:disabled {
   opacity: 0.45;
@@ -206,4 +174,91 @@
   border-radius: 6px;
   background: #f3f4f6;
   font-size: 14px;
+}
+.counselor {
+  margin: auto 0 0;
+  font-size: 13px;
+  color: #9ca3af;
+}
+.linkButton {
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+.pageHeader h1 {
+  margin: 0;
+  font-size: 24px;
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.searchInput {
+  width: 226px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+.caption {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+.rowLabel {
+  color: #6b7280;
+}
+.divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 4px 0;
+  width: 100%;
+}
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.fullWidth {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+.statusSubmitted {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+.statusInConsultation {
+  background: #fef3c7;
+  color: #92400e;
+}
+.statusActivated {
+  background: #dcfce7;
+  color: #166534;
+}
+.statusCancelled {
+  background: #f3f4f6;
+  color: #4b5563;
 }

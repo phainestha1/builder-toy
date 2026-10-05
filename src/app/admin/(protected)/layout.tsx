@@ -13,16 +13,13 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   return (
     <div className={styles.shell}>
       <nav className={styles.sidebar} aria-label="어드민 메뉴">
-        <p className={styles.brand}>아정당 미니 어드민</p>
+        <p className={styles.brand}>아정당 어드민</p>
         <AdminMenu />
+        <p className={styles.counselor}>
+          상담원 {counselor.name} · <LogoutButton />
+        </p>
       </nav>
-      <div className={styles.main}>
-        <header className={styles.header}>
-          <span>{counselor.name} 상담원</span>
-          <LogoutButton />
-        </header>
-        <main className={styles.content}>{children}</main>
-      </div>
+      <main className={styles.content}>{children}</main>
     </div>
   );
 }

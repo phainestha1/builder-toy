@@ -1,15 +1,17 @@
 import Link from "next/link";
 import styles from "../../admin.module.css";
-import { STATUS_TABS, type ApplicationStatus } from "../_lib/view-model";
+import { STATUS_TABS, type StatusFilter } from "../_lib/view-model";
 
 export function StatusTabs({
   basePath,
   current,
   query,
+  counts,
 }: {
   basePath: string;
-  current: ApplicationStatus | "All";
+  current: StatusFilter;
   query: string | null;
+  counts: Record<StatusFilter, number>;
 }) {
   return (
     <div className={styles.tabs} role="tablist" aria-label="접수 상태">
@@ -27,7 +29,7 @@ export function StatusTabs({
             aria-selected={active}
             className={active ? `${styles.tab} ${styles.tabActive}` : styles.tab}
           >
-            {tab.label}
+            {tab.label} {counts[tab.key]}
           </Link>
         );
       })}

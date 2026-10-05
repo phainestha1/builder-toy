@@ -48,8 +48,8 @@ describe("어드민 버튼 표시 규칙 (A6, R5, 화면 05 예외)", () => {
     expect(availableActions("Cancelled", null).payout).toBe("hidden");
   });
 
-  it("개통 전(접수·상담중)에는 지급 영역을 숨긴다", () => {
-    expect(availableActions("Submitted", null).payout).toBe("hidden");
-    expect(availableActions("InConsultation", null).payout).toBe("hidden");
+  it("개통 전(접수·상담중)에는 지급 버튼을 보이되 비활성으로 둔다 (Figma 05: 개통 전 · 산정 대기)", () => {
+    expect(availableActions("Submitted", null).payout).toBe("disabled");
+    expect(availableActions("InConsultation", null).payout).toBe("disabled");
   });
 });

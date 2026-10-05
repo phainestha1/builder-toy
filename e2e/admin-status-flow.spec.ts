@@ -37,20 +37,30 @@ test("상담원이 접수를 상담 시작 → 개통 완료 → 지급 완료�
   // 번호는 가려서 보인다
   await expect(panel.getByTestId("phone-number")).toHaveText(`010-****-${lastFour}`);
 
+  const status = panel.getByTestId("status-badge");
+  const payoutStatus = panel.getByTestId("payout-status");
+  const payButton = panel.getByRole("button", { name: "지급 완료 처리" });
+
+  // 개통 전에는 지급 버튼이 비활성
+  await expect(status).toHaveText("접수");
+  await expect(payoutStatus).toHaveText("개통 전 · 산정 대기");
+  await expect(payButton).toBeDisabled();
+
   // 접수 → 상담중
   await panel.getByRole("button", { name: "상담 시작" }).click();
-  await expect(panel.getByRole("heading", { level: 2 })).toContainText("상담중");
+  await expect(status).toHaveText("상담중");
   await expect(panel.getByRole("button", { name: "상담 시작" })).toBeDisabled();
 
   // 상담중 → 개통완료, 지원금 산정됨
-  await panel.getByRole("button", { name: "개통 완료" }).click();
-  await expect(panel.getByRole("heading", { level: 2 })).toContainText("개통완료");
-  await expect(panel.getByTestId("reward-status")).toHaveText("산정됨");
+  await panel.getByRole("button", { name: "개통 완료 처리" }).click();
+  await expect(status).toHaveText("개통완료");
+  await expect(payoutStatus).toHaveText("산정됨");
 
-  // 지급 처리 → 지급완료, 상태 버튼은 모두 비활성 (끝 상태)
-  await panel.getByRole("button", { name: "지급 처리" }).click();
-  await expect(panel.getByTestId("reward-status")).toHaveText("지급완료");
-  for (const name of ["상담 시작", "개통 완료", "취소"]) {
-    await expect(panel.getByRole("button", { name })).toBeDisabled();
+  // 지급 완료 처리 → 지급완료, 상태 버튼은 모두 비활성 (끝 상태)
+  await payButton.click();
+  await expect(payoutStatus).toHaveText("지급완료");
+  await expect(payButton).toBeDisabled();
+  for (const name of ["상담 시작", "개통 완료 처리", "취소"]) {
+    await expect(panel.getByRole("button", { name, exact: true })).toBeDisabled();
   }
 });

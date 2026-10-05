@@ -1,7 +1,7 @@
 // 화면 05의 버튼 표시 규칙. 표시만 정하고, 최종 판단은 유스케이스(A6, R5)가 한다.
 import type { ApplicationStatus, RewardStatusView } from "./view-model";
 
-export type PayoutAction = "hidden" | "pending" | "enabled" | "paid";
+export type PayoutAction = "hidden" | "disabled" | "pending" | "enabled" | "paid";
 
 export interface AvailableActions {
   startConsultation: boolean;
@@ -20,8 +20,10 @@ export function availableActions(status: ApplicationStatus, rewardStatus: Reward
 }
 
 function payoutAction(status: ApplicationStatus, rewardStatus: RewardStatusView | null): PayoutAction {
-  // 개통 전(취소 포함)에는 지원금이 없다 (R1)
-  if (status !== "Activated") return "hidden";
+  // 개통 전에 취소하면 지원금이 없어 지급 버튼을 숨긴다 (R1, 화면 05 예외)
+  if (status === "Cancelled") return "hidden";
+  // 개통 전에는 산정 대기라 버튼만 비활성으로 보인다
+  if (status !== "Activated") return "disabled";
   switch (rewardStatus) {
     case "Calculated":
       return "enabled";
