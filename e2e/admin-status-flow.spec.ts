@@ -15,9 +15,14 @@ test("로그인하지 않으면 어드민에 들어갈 수 없고 로그인 화�
   await expect(page.getByRole("heading", { name: "상담원 로그인" })).toBeVisible();
 });
 
+test("로그인하지 않으면 테스트 전용 시드 라우트도 막힌다", async ({ request }) => {
+  const response = await request.post("/admin/e2e-seed");
+  expect(response.status()).toBe(404);
+});
+
 test("비밀번호가 틀리면 로그인되지 않는다", async ({ page }) => {
   await login(page, "counselor1", "wrong-pass");
-  await expect(page.getByRole("alert")).toHaveText("아이디 또는 비밀번호가 맞지 않아요");
+  await expect(page.getByRole("alert").filter({ hasText: "아이디 또는 비밀번호가 맞지 않아요" })).toBeVisible();
   await page.goto("/admin/applications");
   await expect(page).toHaveURL(/\/admin\/login$/);
 });
@@ -26,16 +31,18 @@ test("상담원이 접수를 상담 시작 → 개통 완료 → 지급 완료�
   await login(page);
   await expect(page).toHaveURL(/\/admin\/applications/);
 
-  const lastFour = String(Math.floor(1000 + Math.random() * 9000));
-  const seeded = await page.request.post("/admin/e2e-seed", { data: { phoneLastFour: lastFour } });
+  const seeded = await page.request.post("/admin/e2e-seed");
   expect(seeded.ok()).toBeTruthy();
-  const { applicationId } = (await seeded.json()) as { applicationId: string };
+  const { applicationId, phoneLastFour } = (await seeded.json()) as { applicationId: string; phoneLastFour: string };
 
   await page.goto(`/admin/applications?id=${applicationId}`);
   const panel = page.getByRole("complementary", { name: "접수 상세" });
 
   // 번호는 가려서 보인다
-  await expect(panel.getByTestId("phone-number")).toHaveText(`010-****-${lastFour}`);
+  await expect(panel.getByTestId("phone-number")).toHaveText(`010-****-${phoneLastFour}`);
+  // [보기]를 누르면 전체 번호가 보인다 (열람 기록은 서버가 남긴다)
+  await panel.getByRole("button", { name: "보기" }).click();
+  await expect(panel.getByTestId("phone-number")).toHaveText(new RegExp(`^010\\d{4}${phoneLastFour}$`));
 
   const status = panel.getByTestId("status-badge");
   const payoutStatus = panel.getByTestId("payout-status");
