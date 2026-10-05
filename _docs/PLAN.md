@@ -251,8 +251,8 @@ Orchestrator  결과 확인 → 사용자 승인 → main 머지 → 다른 Buil
 - ⛳ 게이트: 보드 형식과 역할 지침 확인
 
 ### Phase B. M0 기획 — Orchestrator + 사용자
-- [ ] B1. `ajd:planning` 스킬로 페인포인트, 타깃, 소구점 가설, 성공 지표 정의 (Notion 인증 필요할 수 있음)
-- [ ] B2. Notion PRD 링크와 요약을 `docs/prd.md`에 기록
+- [x] B1. `ajd:planning` 스킬로 페인포인트, 타깃, 소구점 가설, 성공 지표 정의 (Notion 인증 필요할 수 있음)
+- [x] B2. Notion PRD 링크와 요약을 `docs/prd.md`에 기록
 - ⛳ 게이트: PRD 승인
 
 ### Phase C. M1 화면 설계 — Orchestrator + 사용자
