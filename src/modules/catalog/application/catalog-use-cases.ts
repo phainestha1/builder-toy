@@ -1,7 +1,7 @@
 import type { EstimateInput, RewardCalculationResult } from "@/modules/catalog/ports/catalog-port";
 import type { PlanId, RateTableVersion, Won } from "@/modules/shared/events";
 import { calculateReward } from "../domain/calculate-reward";
-import { baseRewardOf, type RewardRateTable } from "../domain/rate-table";
+import { baseRewardOf, type PlanSpeed, type RewardRateTable } from "../domain/rate-table";
 import type { CatalogRepository } from "./catalog-repository";
 
 /** 요금제 비교(02) 카드 한 장. 기준표 버전에 없는 요금제(C6)는 금액이 없다 */
@@ -9,6 +9,8 @@ export interface PlanComparisonCard {
   planId: PlanId;
   name: string;
   monthlyFee: Won;
+  speed: PlanSpeed;
+  includesTv: boolean;
   /** 약정 없음 기준의 예상 지원금 = 기본 지원금 (C8). 기준표에 없으면 `null` */
   rewardEstimate: Won | null;
   rateTableVersion: RateTableVersion;
@@ -40,6 +42,8 @@ export async function listPlanComparison(repository: CatalogRepository): Promise
     planId: plan.id,
     name: plan.name,
     monthlyFee: plan.monthlyFee,
+    speed: plan.speed,
+    includesTv: plan.includesTv,
     rewardEstimate: baseRewardOf(table, plan.id),
     rateTableVersion: table.version,
   }));
