@@ -14,7 +14,7 @@
 | 역할 | herdr pane | 에이전트 이름 | 작업 위치 | 상태 |
 |---|---|---|---|---|
 | Orchestrator | `w3:p1` | `orchestrator` | `main` | 활성 |
-| Builder A | `w3:p5` | `builder-a` | worktree (Phase F에서 생성) | 대기 |
+| Builder A | `w3:p5` | `builder-a` | worktree `contract/t-d1` | T-D1 |
 | Builder B | `w3:p6` | `builder-b` | worktree (Phase F에서 생성) | 대기 |
 | Checker | `w3:p8` | `checker` | 리뷰 대상 브랜치 (읽기 전용) | 대기 |
 
@@ -27,7 +27,7 @@
 | T-A4 | A | 루트 CLAUDE.md, `.claude` 체계(skills, agents, commands, rules, hooks) | Orchestrator | done | 훅 모의 입력 테스트 통과, 사용자 확인 | — | 2026-10-05 사용자 확인 |
 | T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | done | PRD 승인, `docs/prd.md`에 링크와 요약 | — | 2026-10-05 ⛳ PRD 승인 |
 | T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | done | 화면 설계 승인, `docs/screens.md` 기록 | — | 2026-10-05 ⛳ 화면 설계 승인 |
-| T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Orchestrator | todo | `docs/glossary.md`, `docs/decisions/` | — | |
+| T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Builder A | doing | `docs/glossary.md`, `docs/design/event-storming.md`, `docs/decisions/0001-bounded-contexts.md` 작성, Checker 검증, 사용자 승인 | — | 계약 작업 예외로 `contract/t-d1` worktree에서 진행 |
 | T-D2 | D | 이벤트·Port 타입 작성, `contract-v1` 태그 | Orchestrator | todo | 타입 검사 통과, 사용자 승인 | — | |
 | T-E1 | E | 스캐폴딩, `npm run check`, `.claude` 경로·명령 보정 | Orchestrator | todo | 훅 차단과 아키텍처 검사 실패를 직접 재현 | — | |
 | T-F1 | F | worktree 생성, 세션 재시작, 시범 작업 1개 | 전체 | todo | 작업 한 바퀴(PLAN 8.5) 완주 | — | |

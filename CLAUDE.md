@@ -48,13 +48,14 @@
   | Orchestrator | `chore/<요약>` | `.claude` 설정, 도구 |
   | Orchestrator | `contract/<작업ID>` | 계약 파일. 이 브랜치에서만 고칠 수 있습니다 |
   | Builder | `feat/a-<작업ID>`, `feat/b-<작업ID>` (worktree) | 기능 구현 |
+  | Builder | `contract/<작업ID>` (worktree) | Orchestrator가 배정한 계약 작업만 (예: T-D1 도메인 설계) |
 - **작업 하나에 PR 하나.** 앞 PR에 의존하면 base를 앞 브랜치로 두고 쌓습니다.
 - **머지는 merge commit으로 합니다** (`gh pr merge --merge`). squash·rebase 머지와 force push는 쓰지 않습니다. 쌓인 PR과 Builder 브랜치가 깨지지 않게 하기 위해서입니다.
 - **`main`이 바뀌면** 작업 브랜치는 `git fetch origin && git merge origin/main`으로 따라갑니다. 이미 push한 브랜치는 rebase하지 않습니다.
 
 ## 반드시 지킬 것
 1. **게이트(⛳)는 사용자만 넘깁니다.** PLAN 9절의 게이트에서는 멈추고 확인을 받습니다.
-2. **계약은 `contract/*` 브랜치에서만 고칩니다.** 계약 파일은 `docs/glossary.md`, `src/modules/shared/events/**`, `src/modules/*/ports/**`입니다. 다른 브랜치에서는 훅이 막습니다. Builder는 `/contract-change`로 요청합니다.
+2. **계약은 `contract/*` 브랜치에서만 고칩니다.** 계약 파일은 `docs/glossary.md`, `src/modules/shared/events/**`, `src/modules/*/ports/**`입니다. 다른 브랜치에서는 훅이 막습니다. Builder는 Orchestrator가 계약 작업을 배정해 `contract/*` worktree를 받았을 때만 고치고, 그 밖에는 `/contract-change`로 요청합니다.
 3. **BC 경계를 지킵니다.** 다른 BC와는 이벤트와 Port로만 연결합니다. `shared`에는 특정 BC의 로직을 두지 않습니다. 자세한 규칙은 `.claude/rules/architecture.md`에 있습니다.
 4. **테스트 결과는 `실행 N / 통과 N`으로만 보고합니다.** 출력에서 직접 읽은 숫자만 씁니다. 0건이거나 건수가 안 보이면 통과가 아닙니다.
 5. **만든 쪽이 채점하지 않습니다.** Checker에게는 브랜치, 작업 ID, 완료 기준만 넘깁니다.
