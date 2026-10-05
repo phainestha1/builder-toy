@@ -37,3 +37,38 @@ export const STATUS_TABS: readonly { key: ApplicationStatus | "All"; label: stri
 export function formatWon(amount: number | null): string {
   return amount === null ? "-" : `${amount.toLocaleString("ko-KR")}원`;
 }
+
+/** 목록 한 줄. `application` 조회와 `reward` 조회를 접수 ID로 붙인 값 (ADR 0001 2절) */
+export interface AdminApplicationRow {
+  applicationId: string;
+  submittedAt: string;
+  customerName: string;
+  maskedPhoneNumber: string;
+  /** 요금제 이름. 찾지 못하면 요금제 ID, 스냅샷이 없으면 `null` */
+  planLabel: string | null;
+  /** 계산 결과 스냅샷의 예상 지원금 합계 */
+  estimateTotal: number | null;
+  assignedVariant: ApplicationSummary["assignedVariant"];
+  status: ApplicationStatus;
+  resubmissionCount: number;
+  rewardStatus: RewardStatusView | null;
+}
+
+export interface AdminRewardView {
+  status: RewardStatusView;
+  baseReward: number | null;
+  feeCoverage: number | null;
+  totalReward: number | null;
+  paidAt: string | null;
+}
+
+export interface AdminApplicationDetail extends AdminApplicationRow {
+  installationRegion: string | null;
+  preferredContactTimeLabel: string | null;
+  statusHistory: { from: ApplicationStatus; to: ApplicationStatus; counselorId: string; changedAt: string }[];
+  reward: AdminRewardView | null;
+}
+
+export function formatDate(iso: string): string {
+  return iso.slice(0, 10);
+}
