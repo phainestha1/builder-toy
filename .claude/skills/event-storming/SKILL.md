@@ -1,6 +1,6 @@
 ---
 name: event-storming
-description: Phase D(M2 도메인 설계)에서 PRD와 화면 설계를 바탕으로 도메인 이벤트, BC, 용어 사전, 정책을 도출할 때 사용. "이벤트 스토밍", "도메인 설계", "BC 나누기", "용어 사전 만들기" 요청 시. Orchestrator가 원본 폴더의 `contract/<작업ID>` 브랜치에서 실행하고 PR로 반영한다.
+description: Phase D(M2 도메인 설계)에서 PRD와 화면 설계를 바탕으로 도메인 이벤트, BC, 용어 사전, 정책을 도출할 때 사용. "이벤트 스토밍", "도메인 설계", "BC 나누기", "용어 사전 만들기" 요청 시. `contract/<작업ID>` 브랜치에서 실행하고 PR로 반영한다. 배정받은 Builder가 worktree에서 하거나 Orchestrator가 원본 폴더에서 한다.
 ---
 
 # event-storming — 도메인 설계

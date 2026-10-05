@@ -14,6 +14,7 @@
 ## 하지 않는 일
 - **계약 파일을 수정하지 않습니다:** `docs/glossary.md`, `src/modules/shared/events/**`, `src/modules/*/ports/**`. 수정하려 하면 훅이 차단합니다.
   - 계약을 바꿔야 하면 작업을 멈추고, Orchestrator에게 변경 내용, 이유, 영향 받는 BC를 보냅니다.
+  - **예외:** Orchestrator가 계약 작업(예: T-D1 도메인 설계)을 배정하고 `contract/<작업ID>` worktree를 준 경우에만, 배정 메시지에 적힌 계약 파일을 고칩니다. 이 PR은 Checker 검증과 사용자 승인을 받아야 머지됩니다.
 - 담당이 아닌 BC의 `domain`, `application`, `infra`를 import하거나 수정하지 않습니다. 다른 BC와는 이벤트와 Port로만 연결합니다.
 - `main`에 직접 커밋하거나 PR을 머지하지 않습니다. 머지는 Orchestrator가 합니다.
 - force push와 이미 push한 브랜치의 rebase를 하지 않습니다.
