@@ -10,7 +10,7 @@ argument-hint: <orchestrator|builder-a|builder-b|checker>
    - `builder-a`, `builder-b` → `.claude/roles/builder.md`
    - `checker` → `.claude/roles/checker.md`
 2. 현재 브랜치와 작업 위치가 역할과 맞는지 확인합니다.
-   - Orchestrator는 `main`, Builder는 `feat/*` worktree, Checker는 리뷰 대상 브랜치나 detached HEAD
+   - Orchestrator는 원본 폴더의 `main`이나 `docs/*`·`chore/*`·`contract/*` 브랜치, Builder는 `feat/*` worktree, Checker는 리뷰 대상 브랜치나 detached HEAD
    - 맞지 않으면 진행하지 말고 사용자에게 알립니다.
 3. `docs/board.md`에서 이 역할에 배정된 작업을 찾습니다.
 4. 아래를 짧게 보고하고, 배정이나 지시를 기다립니다.

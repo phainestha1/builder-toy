@@ -3,7 +3,7 @@ description: (Orchestrator) 보드의 작업을 Builder에게 배정하고 herdr
 argument-hint: <builder-a|builder-b> <작업ID>
 ---
 
-Orchestrator만 실행합니다. 현재 브랜치가 `main`이 아니면 중단합니다.
+Orchestrator만 실행합니다. 원본 폴더(worktree가 아닌 곳)에서 실행합니다.
 
 인자: `$ARGUMENTS` (첫 번째는 Builder 이름, 두 번째는 작업 ID)
 
@@ -23,5 +23,5 @@ Orchestrator만 실행합니다. 현재 브랜치가 `main`이 아니면 중단�
    herdr agent prompt <builder> "<메시지>" --wait --timeout 600000
    herdr agent read <builder> --source recent-unwrapped --lines 80
    ```
-4. 보드에서 담당을 바꾸고 상태를 `doing`으로 고친 뒤 커밋합니다.
+4. 보드에서 담당을 바꾸고 상태를 `doing`으로 고칩니다. `docs/*` 브랜치에서 커밋하고 PR로 반영합니다.
 5. 상대가 `blocked`이면 직접 답하지 않습니다. 화면 내용을 사용자에게 보여 줍니다.

@@ -22,5 +22,6 @@ argument-hint: <대상 파일 또는 계약 이름>
 Orchestrator가 이 요청을 받으면 할 일:
 1. 보드의 "계약 변경 요청" 표에 기록합니다.
 2. 영향 받는 BC를 확인하고 사용자 승인을 받습니다.
-3. `main`에 반영하고 `contract-vN` 태그를 붙입니다.
-4. 모든 Builder에게 rebase를 알립니다.
+3. `main`에서 `contract/<요청ID>` 브랜치를 만들어 반영하고 PR을 올립니다.
+4. 사용자 승인 후 `/merge`로 머지하고, `main`의 머지 커밋에 `contract-vN` 태그를 붙입니다.
+5. 모든 Builder에게 `main`을 merge하라고 알립니다.
