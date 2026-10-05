@@ -41,3 +41,9 @@ src/modules/<bc>/
 
 ## 경계가 맞지 않는다고 느끼면
 코드를 억지로 맞추지 말고 멈춥니다. 왜 경계가 어긋나는지 정리해서 Orchestrator에게 보냅니다. 경계 변경은 `docs/decisions/`에 기록한 뒤에 합니다.
+
+## 조립 위치 (composition root)
+- 라우트가 쓸 유스케이스는 `src/composition/<bc>.ts`에서 저장소·Port 구현(infra)을 넣어 만듭니다. `src/app`은 `src/composition`에서 가져다 씁니다.
+- 공용 이벤트 버스는 `src/composition/event-bus.ts`의 `eventBus` 하나입니다. 이벤트 구독도 각 BC의 composition 파일에서 등록합니다.
+- `src/modules`는 `src/composition`을 import하지 않습니다(`modules-not-to-composition` 규칙).
+- DB 테이블은 각 BC의 `infra/`에 둡니다(예: `src/modules/application/infra/schema.ts`). 연결은 `src/modules/shared/infra/db.ts`를 씁니다.

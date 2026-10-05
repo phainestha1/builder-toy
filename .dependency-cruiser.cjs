@@ -69,6 +69,20 @@ module.exports = {
       to: { path: "^src/modules/[^/]+/(domain|infra|ports)/", pathNot: "^src/modules/shared/" },
     },
     {
+      name: "modules-not-to-composition",
+      comment: "src/composition은 조립 위치다. BC와 shared는 composition을 import하지 않는다",
+      severity: "error",
+      from: { path: "^src/modules/" },
+      to: { path: "^src/composition/" },
+    },
+    {
+      name: "app-not-to-modules-infra-via-lib",
+      comment: "src/app, src/composition 밖의 src 폴더(src/lib 등)도 BC의 domain·infra를 직접 쓰지 않는다",
+      severity: "error",
+      from: { path: "^src/", pathNot: ["^src/modules/", "^src/app/", "^src/composition/"] },
+      to: { path: "^src/modules/[^/]+/(domain|infra)/", pathNot: "^src/modules/shared/" },
+    },
+    {
       name: "no-circular",
       severity: "error",
       from: {},
