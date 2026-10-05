@@ -13,6 +13,8 @@ Orchestrator만 실행합니다.
    - 작업 ID
    - 완료 기준
 
+   판정 기준(높음 0건이면 PASS)은 `domain-review` 스킬에 있으므로 따로 적지 않아도 됩니다.
+
    Builder가 보낸 설명, 의도, 자체 평가, 테스트 결과는 넣지 않습니다. Checker가 직접 확인해야 합니다.
 3. Checker에게 보냅니다.
    ```bash
