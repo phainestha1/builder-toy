@@ -256,25 +256,28 @@ export function createApplicationUseCases(deps: ApplicationDependencies) {
     return { kind: "Revealed", phoneNumber: application.phoneNumber };
   }
 
-  /** `ApplicationPort` 조회: 접수의 계산 결과 스냅샷 (R2, R3) */
-  async function findEstimateSnapshot(applicationId: ApplicationId): Promise<EstimateSnapshotLookup> {
-    const application = await repository.findById(applicationId);
-    if (!application) return { kind: "ApplicationNotFound", applicationId };
-    if (!application.estimateSnapshot) return { kind: "NoSnapshot", applicationId };
-    return { kind: "Found", snapshot: { applicationId, ...application.estimateSnapshot } };
-  }
-
   return {
     submitApplication,
     changeApplicationStatus,
     listApplications,
     getApplicationDetail,
     revealPhoneNumber,
-    findEstimateSnapshot,
+    findEstimateSnapshot: (applicationId: ApplicationId) => findEstimateSnapshot(repository, applicationId),
   };
 }
 
 export type ApplicationUseCases = ReturnType<typeof createApplicationUseCases>;
+
+/** `ApplicationPort` 조회: 접수의 계산 결과 스냅샷 (R2, R3) */
+export async function findEstimateSnapshot(
+  repository: ApplicationRepository,
+  applicationId: ApplicationId,
+): Promise<EstimateSnapshotLookup> {
+  const application = await repository.findById(applicationId);
+  if (!application) return { kind: "ApplicationNotFound", applicationId };
+  if (!application.estimateSnapshot) return { kind: "NoSnapshot", applicationId };
+  return { kind: "Found", snapshot: { applicationId, ...application.estimateSnapshot } };
+}
 
 function toSummary(application: Application): ApplicationSummary {
   return {
