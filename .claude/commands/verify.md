@@ -20,5 +20,5 @@ Orchestrator만 실행합니다.
    herdr agent read checker --source recent-unwrapped --lines 120
    ```
 4. 받은 판정과 `테스트 실행 N / 통과 N`을 보드의 검증 결과 칸에 적습니다. 그다음 사용자에게 보고합니다.
-   - PASS면 `/merge`를 제안합니다.
+   - PASS면 `/merge`를 제안합니다. 보드 변경은 `docs/*` 브랜치에서 커밋하고 PR로 반영합니다.
    - FAIL이면 확정된 지적만 Builder에게 돌려보냅니다.
