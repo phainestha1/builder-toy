@@ -10,7 +10,17 @@ INPUT=$(cat)
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
 CWD=$(echo "$INPUT" | jq -r '.cwd // ""')
 
-echo "$CMD" | grep -qE '\bgit\b' || exit 0
+# 판정용 명령: heredoc 본문과, 공백이 든 따옴표 문자열(메시지·본문)을 뺀다.
+# 메시지 안의 "git merge" 같은 글자를 실제 명령으로 오인하지 않기 위해서다.
+# 공백 없는 따옴표 토큰("main" 등)은 남겨서 우회를 막는다.
+CLEAN=$(printf '%s\n' "$CMD" | awk '
+  h != "" { if ($0 == h) h = ""; next }
+  match($0, /<<-?[ ]*["'\'']?[A-Za-z_]+["'\'']?/) {
+    t = substr($0, RSTART, RLENGTH); gsub(/<<-?[ ]*/, "", t); gsub(/["'\'']/, "", t); h = t
+  }
+  { print }' | sed -E "s/'[^']*[[:space:]][^']*'//g; s/\"[^\"]*[[:space:]][^\"]*\"//g")
+
+echo "$CLEAN" | grep -qE '\bgit\b' || exit 0
 
 block() {
   echo "[hook] git 보호: $1" >&2
@@ -18,7 +28,7 @@ block() {
   exit 2
 }
 
-if echo "$CMD" | grep -qE '\bgit\b.*\bpush\b.*(--force|-f\b|--force-with-lease)'; then
+if echo "$CLEAN" | grep -qE '\bgit\b.*\bpush\b.*(--force|-f\b|--force-with-lease)'; then
   block "force push 금지"
 fi
 
@@ -32,8 +42,8 @@ BRANCH=$(git -C "$DIR" branch --show-current 2>/dev/null)
 
 # git push: 대상 ref에 main이 있으면 차단. refspec이 없거나 HEAD면 현재 브랜치가 대상이다.
 # macOS sed는 \b를 지원하지 않으므로 공백으로 경계를 잡는다.
-PUSH_ARGS=$(echo "$CMD" | sed -nE 's/.*git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+push([^;&|]*).*/\2/p' | head -1)
-if echo "$CMD" | grep -qE '\bgit\b([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+push\b'; then
+PUSH_ARGS=$(echo "$CLEAN" | sed -nE 's/.*git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+push([^;&|]*).*/\2/p' | head -1)
+if echo "$CLEAN" | grep -qE '\bgit\b([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+push\b'; then
   POS=()
   for a in $PUSH_ARGS; do
     case "$a" in -*) ;; *) POS+=("$a") ;; esac
@@ -42,6 +52,7 @@ if echo "$CMD" | grep -qE '\bgit\b([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:s
   [ ${#REFS[@]} -eq 0 ] && REFS=("$BRANCH")
   for r in "${REFS[@]}"; do
     DST=${r##*:}
+    DST=${DST//[\"\']/}
     [ "$DST" = "HEAD" ] && DST=$BRANCH
     DST=${DST#refs/heads/}
     [ "$DST" = "main" ] && block "main으로 push"
@@ -49,7 +60,7 @@ if echo "$CMD" | grep -qE '\bgit\b([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:s
 fi
 
 if [ "$BRANCH" = "main" ]; then
-  if echo "$CMD" | grep -qE '\bgit\b([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+(commit|merge)\b'; then
+  if echo "$CLEAN" | grep -qE '\bgit\b([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+(commit|merge)\b'; then
     block "main 브랜치에서 commit/merge"
   fi
   exit 0
@@ -59,7 +70,7 @@ fi
 GIT_DIR=$(cd "$DIR" 2>/dev/null && git rev-parse --absolute-git-dir 2>/dev/null)
 COMMON_DIR=$(cd "$DIR" 2>/dev/null && cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd -P)
 if [ -n "$GIT_DIR" ] && [ "$(cd "$GIT_DIR" && pwd -P)" != "$COMMON_DIR" ]; then
-  if echo "$CMD" | grep -qE '\bgit\b.*\b(checkout|switch)\b[[:space:]]+main(\s|$)'; then
+  if echo "$CLEAN" | grep -qE '\bgit\b.*\b(checkout|switch)\b[[:space:]]+main(\s|$)'; then
     block "worktree에서 main checkout"
   fi
 fi

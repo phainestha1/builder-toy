@@ -26,7 +26,7 @@
 | 역할 | herdr | 위치 | 한 줄 요약 | 지침 |
 |---|---|---|---|---|
 | Orchestrator | `w3:p1` `orchestrator` | 원본 폴더, `docs/*`·`chore/*`·`contract/*` 브랜치 | 계획·계약·배정·PR 머지. 기능 코드는 안 씀 | `.claude/roles/orchestrator.md` |
-| Builder A / B | `w3:p9` `builder-a` / 배정 때 생성 `builder-b` | `feat/*` worktree | 배정받은 BC만 구현 | `.claude/roles/builder.md` |
+| Builder A / B | `w3:p9` `builder-a` / `w7:p1` `builder-b` | `feat/*` worktree | 배정받은 BC만 구현 | `.claude/roles/builder.md` |
 | Checker | `w3:pA` `checker` | 리뷰용 worktree | 독립 검증. 코드 수정 안 함 | `.claude/roles/checker.md` |
 
 pane ID는 창을 옮기거나 다시 열면 바뀝니다. 세션끼리는 에이전트 이름으로 주고받고, 이 표의 pane ID는 참고용입니다.
