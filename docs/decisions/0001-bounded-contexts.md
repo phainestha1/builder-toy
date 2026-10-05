@@ -138,6 +138,41 @@ Port는 BC 사이 조회에만 쓴다. 화면(`src/app`)은 각 BC의 `applicati
 - **다시 나누는 조건:** 상담 배정이나 상담 결과 기록이 범위에 들어오면 `consultation` BC를 다시 나눈다. 그때 상태 머신의 주인을 새 ADR로 정한다.
 - 정책 A1~A9, C1~C8, R1~R6, E1~E5, P1은 각 BC의 도메인 테스트로 옮긴다.
 - **T-D2에서 정함 (4·5차 리뷰의 낮음 지적):** 영문 필드명, 배정 레코드 키, 배정 확인 호출 위치, 배정 레코드 저장 실패 처리, `visitorId` 발급 주체, `ApplicationSubmitted` 밖의 이벤트 payload, event-storming 문구와 반영 표, [가정] 중복 표시, 약정 아니요일 때 남은 약정 개월 필드 값, event-storming 반영 표, `상담중` 합침에서 계산 입력 오류 처리, 요금제 수명(판매 종료 등).
+- **T-D2에서 정한 것** (타입: `src/modules/shared/events/`, `src/modules/{catalog,application,experiment}/ports/`):
+  - 공통 값: ID(`applicationId`, `visitorId`, `counselorId`, `planId`)와 기준표 버전(`rateTableVersion`)은 문자열이다. 금액은 원 단위 정수(`Won`)다. 시각은 ISO 8601 UTC 문자열이다.
+  - 배정 변형 값은 `"A" | "B" | "Excluded"`다. `Excluded`가 `제외`다.
+  - 이벤트 모양은 `{ type, occurredAt, payload }`다. 사실이 일어난 시각은 공통 필드 `occurredAt` 하나로 담는다. 그래서 `ApplicationSubmitted`의 접수 시각도 `occurredAt`이다.
+  - 이벤트 payload는 아래와 같다. 개인정보는 넣지 않고(P1), 테스트(`events.test.ts`)가 타입과 값으로 검사한다.
+    | 이벤트 | payload |
+    |---|---|
+    | `ApplicationSubmitted` | `applicationId`, `visitorId`, `assignedVariant` |
+    | `ApplicationMerged` | `applicationId`, `resubmissionCount`(합친 뒤 값) |
+    | `ConsultationStarted` · `LineActivated` · `ApplicationCancelled` | `applicationId`, `counselorId` (A7) |
+    | `RewardCalculated` | `applicationId`, `rateTableVersion`, `baseReward`, `feeCoverage`, `totalReward` |
+    | `RewardPaid` | `applicationId`, `counselorId`, `totalReward` (R6) |
+  - 지원금은 접수 1건에 하나라서(R4) 따로 `rewardId`를 두지 않고 `applicationId`로 식별한다. v1의 실험은 하나뿐이라 이벤트에 `experimentId`를 넣지 않는다 [가정].
+  - `EstimateInput` 필드는 `planId`, `hasRemainingCommitment`, `remainingCommitmentMonths`, `earlyTerminationFee`다. 빈 칸은 `null`이다.
+  - 약정 아니요일 때 정규화된 입력(`NormalizedEstimateInput`)에서 남은 약정 개월은 `null`이고, 위약금은 `NotApplicable`이다. 위약금 입력은 `Entered`(입력값), `Unknown`(모름), `NotApplicable`(해당 없음) 셋 가운데 하나다.
+  - `CatalogPort`의 메서드는 둘이다. `calculateRewardWithCurrentVersion`은 접수 때 쓰고(A2), `calculateRewardWithVersion`은 개통 뒤 산정에 쓴다(R2).
+    - 결과는 `Calculated`, `PlanNotInRateTable`(C6), `Rejected` 셋 가운데 하나다.
+    - `Rejected`의 사유는 `EmptyInput`, `PartialInput`, `OutOfRange`, `UnknownPlan`, `UnknownRateTableVersion` 가운데 하나다.
+    - `Calculated`는 정규화된 입력, 적용 위약금, 기준표 버전, 예상 지원금(`baseReward`, `feeCoverage`, `total`)을 담는다. 이 값이 그대로 스냅샷이 된다.
+  - `ApplicationPort.findEstimateSnapshot`는 `Found`, `NoSnapshot`(R3), `ApplicationNotFound` 셋 가운데 하나를 돌려준다.
+  - `ExperimentPort.findAssignment`는 배정 레코드가 없으면 `null`을 돌려준다. `null`을 `Excluded`로 바꾸는 일(A9)은 `application`이 한다.
+  - 배정 레코드 키는 `visitorId`다. v1의 실험이 하나뿐이라서다 [가정]. 실험이 늘면 실험 ID와 `visitorId`를 함께 키로 쓴다.
+  - 배정 확인은 고객 화면(01~04)마다 서버 쪽 페이지가 진입할 때 부른다.
+  - 배정 레코드 저장에 실패하면 그 응답은 `Excluded`(A안)로 보여 준다. 레코드가 없으니 다음 진입 때 다시 만들고, 그때 들어온 화면을 기준으로 정한다. 그래서 첫 화면 판정이 바뀔 수 있는데, 이것은 알려진 한계로 둔다 [가정].
+  - `visitorId`는 서버가 요청을 처리할 때 발급한다. 쿠키가 없으면 UUID를 새로 만들어 익명 쿠키에 담는다.
+  - `상담중` 합침에서 계산 입력 오류가 나면 다른 접수와 같이 C4로 검사해 거절한다. 상태에 따라 검증이 달라지면 응답이 접수 상태를 더 드러내기 때문이다.
+  - 요금제 수명: v1에서는 요금제를 지우지 않고 판매 종료 상태도 두지 않는다 [가정]. 팔지 않는 요금제는 새 기준표 버전에서 빼서 C6으로 처리한다.
+  - `docs/design/event-storming.md`의 문구, 반영 표, [가정] 중복 표시는 이번 작업의 수정 범위 밖이다. Orchestrator에게 넘긴다.
+  - **경계 검사** (`.dependency-cruiser.cjs`): 다른 BC는 `ports/`와 `shared/events/`만 import할 수 있다. 그 밖의 규칙은 다음과 같다.
+    - `shared`는 BC를 import하지 않는다.
+    - `ports`는 계약만 import한다.
+    - `domain`은 프레임워크와 DB를 import하지 않는다.
+    - `application`은 `infra`를 import하지 않는다.
+    - `src/app`은 `domain`·`infra`·`ports`를 import하지 않는다. `shared`는 허용한다.
+- **후속 과제 (T-D2):** 라우트가 유스케이스에 `infra` 구현을 넣어 주는 조립 위치(composition root)를 정해야 한다. 지금 규칙에서는 `src/app`이 `infra`를 import할 수 없다. 첫 기능 작업에서 정한다.
 - **후속 과제 (3차 리뷰의 불확실 지적):**
   - 계산 기록 여부를 라우트가 판단할지 `experiment` 유스케이스가 판단할지 구현 때 정한다.
   - 03으로 바로 온 방문자가 지표 2에서도 빠지는 이유(지표 2도 `제외` 기준을 따름)를 M7 지표 정의에 적는다.
