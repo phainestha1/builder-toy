@@ -28,9 +28,13 @@
 | T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | done | PRD 승인, `docs/prd.md`에 링크와 요약 | — | 2026-10-05 ⛳ PRD 승인 |
 | T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | done | 화면 설계 승인, `docs/screens.md` 기록 | — | 2026-10-05 ⛳ 화면 설계 승인 |
 | T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Builder A | done | `docs/glossary.md`, `docs/design/event-storming.md`, `docs/decisions/0001-bounded-contexts.md` 작성, Checker 검증, 사용자 승인 | PASS (6차, `1d71fb1`) · 테스트 해당 없음 (문서 작업) | PR #6(검증 전 머지), #7. 1~5차 FAIL 후 6차 PASS. 승인은 사용자 위임으로 Orchestrator |
-| T-D2 | D | 이벤트·Port 타입 작성, `contract-v1` 태그 | Orchestrator | todo | 타입 검사 통과, 사용자 승인 | — | |
-| T-E1 | E | 스캐폴딩, `npm run check`, `.claude` 경로·명령 보정 | Orchestrator | todo | 훅 차단과 아키텍처 검사 실패를 직접 재현 | — | |
-| T-F1 | F | worktree 생성, 세션 재시작, 시범 작업 1개 | 전체 | todo | 작업 한 바퀴(PLAN 8.5) 완주 | — | |
+| T-D2 | D·E | 스캐폴딩(E1·E2) + 이벤트 7개·Port 3개 타입, 머지 뒤 `contract-v1` 태그 | Builder A | doing | `npm run check`(타입·린트·테스트·아키텍처) 통과, 테스트 실행 1건 이상, 아키텍처 위반이 실패로 잡히는 것을 1회 재현, 타입은 ADR 0001 기준, Checker PASS | — | 계약 작업 예외로 `contract/t-d2` worktree. T-E1을 합침 |
+| T-E1 | E | 스캐폴딩, `npm run check`, `.claude` 경로·명령 보정 | — | done | — | — | T-D2에 합침 |
+| T-F1 | F | worktree 생성, 세션 재시작, 시범 작업 1개 | 전체 | done | 작업 한 바퀴(PLAN 8.5) 완주 | — | T-D1로 한 바퀴 완주 |
+| T-G1 | G | M4 `catalog`·`application` 도메인과 유스케이스 (TDD) | Builder A | todo | ADR 0001의 C·A 정책을 도메인 테스트로, `npm run check` 통과, Checker PASS | — | `contract-v1` 뒤 시작 |
+| T-G2 | G | M4 `reward`·`experiment` 도메인과 유스케이스 (TDD) | Builder B | todo | ADR 0001의 R·E 정책을 도메인 테스트로, `npm run check` 통과, Checker PASS | — | `contract-v1` 뒤 시작 |
+| T-G3 | G | M5 고객 화면 01~04 (Figma 기준) | Builder A | todo | 퍼널 E2E 1개 통과, Checker PASS | — | T-G1 뒤 |
+| T-G4 | G | M6 상담원 어드민 05 + 로그인 | Builder B | todo | 상태 전이 E2E 1개 통과, Checker PASS | — | T-G2 뒤 |
 
 ## 계약 변경 요청
 > 계약 파일: `docs/glossary.md`, `src/modules/shared/events/**`, `src/modules/*/ports/**`
