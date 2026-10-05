@@ -24,11 +24,12 @@
 | T-A1 | A | git 저장소 초기화, 원격 연결, 첫 커밋 | Orchestrator | done | `origin/main`에 첫 커밋 반영 | — | |
 | T-A2 | A | 작업 보드 골격 | Orchestrator | review | 작업 표, 계약 변경 요청 표, 규칙 포함 | — | 사용자 확인 대기 |
 | T-A3 | A | 역할 지침 3개 초안 | Orchestrator | review | orchestrator / builder / checker 지침 작성 | — | 사용자 확인 대기 |
+| T-A4 | A | 루트 CLAUDE.md, `.claude` 체계(skills, agents, commands, rules, hooks) | Orchestrator | review | 훅 모의 입력 테스트 통과, 사용자 확인 | — | 사용자 확인 대기 |
 | T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | todo | PRD 승인, `docs/prd.md`에 링크와 요약 | — | |
 | T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | todo | 화면 설계 승인, `docs/screens.md` 기록 | — | |
 | T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Orchestrator | todo | `docs/glossary.md`, `docs/decisions/` | — | |
 | T-D2 | D | 이벤트·Port 타입 작성, `contract-v1` 태그 | Orchestrator | todo | 타입 검사 통과, 사용자 승인 | — | |
-| T-E1 | E | 스캐폴딩, `npm run check`, 스킬 3개, 계약 잠금 훅 | Orchestrator | todo | 훅 차단과 아키텍처 검사 실패를 직접 재현 | — | |
+| T-E1 | E | 스캐폴딩, `npm run check`, `.claude` 경로·명령 보정 | Orchestrator | todo | 훅 차단과 아키텍처 검사 실패를 직접 재현 | — | |
 | T-F1 | F | worktree 생성, 세션 재시작, 시범 작업 1개 | 전체 | todo | 작업 한 바퀴(PLAN 8.5) 완주 | — | |
 
 ## 계약 변경 요청

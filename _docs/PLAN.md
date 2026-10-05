@@ -1,6 +1,6 @@
 # 아정당 AI Builder 온보딩 연습 프로젝트 — 플랜
 
-> 작성일: 2026-10-05 · 최종 수정: 2026-10-05 · 상태: **멀티 세션 운영안·액션 플랜 반영, 착수 승인 대기 (코드 작업 전)**
+> 작성일: 2026-10-05 · 최종 수정: 2026-10-05 · 상태: **Phase A 완료 (CLAUDE.md·.claude 체계 포함), Phase B 대기**
 > 근거 자료: `ai_builder_jd.pdf`(채용 공고), `ajd_ai_builder_case.pdf`(이사 서비스 AX 도입기, 아정당 기술 블로그)
 
 ---
@@ -112,44 +112,49 @@ TypeScript 기반으로 진행하고, 로컬에서만 실행합니다.
 
 ```
 herdr_worktree_practice/
+├─ CLAUDE.md                 # 프로젝트 전체 조망: 진실의 원천, 역할, 작업 흐름, 규칙
 ├─ _docs/                    # 원본 PDF, 이 플랜
 ├─ docs/
 │  ├─ prd.md                 # Notion PRD 링크와 요약 (원본은 Notion)
 │  ├─ screens.md             # Figma 링크와 화면 목록 (원본은 Figma)
-│  ├─ glossary.md            # 유비쿼터스 언어
+│  ├─ glossary.md            # 유비쿼터스 언어 (계약)
 │  ├─ design/                # 사람이 읽는 설계 논의와 대안
 │  ├─ decisions/             # AI가 참조하는 확정 결정 (ADR)
+│  ├─ checklists/            # 작업별 설계 체크리스트 (strategy-checklist 산출물)
 │  └─ board.md               # 멀티 세션 작업 보드 (작업·담당·상태·완료 기준)
 ├─ .claude/
-│  ├─ CLAUDE.md              # 프로젝트 규칙, 용어 사전 링크
-│  ├─ settings.json          # 계약 잠금 훅 등록
-│  ├─ hooks/guard-contracts.sh  # Builder가 계약 파일을 고치면 차단
-│  ├─ roles/                 # orchestrator.md / builder.md / checker.md 역할 지침
-│  └─ skills/
-│     ├─ strategy-checklist/ # 설계: 자료 확인 → 질문 → 체크리스트 → 멈춤
-│     ├─ tdd-helper/         # 구현: 실패 테스트 → 구현 → 리팩터 → 실행 건수 확인
-│     └─ code-review/        # 리뷰: 지적 → 별도 검증 에이전트가 재확인
+│  ├─ settings.json          # 훅 등록, 권한 (push·merge·tag는 확인)
+│  ├─ roles/                 # orchestrator / builder / checker 역할 지침
+│  ├─ skills/
+│  │  ├─ strategy-checklist/ # 설계: 자료 확인 → 질문 → 체크리스트 → 멈춤
+│  │  ├─ tdd-helper/         # 구현: 실패 테스트 → 구현 → 리팩터 → 실행 건수 확인
+│  │  ├─ domain-review/      # 리뷰: 관점별 서브에이전트 → finding-verifier 재확인
+│  │  └─ event-storming/     # Phase D: 이벤트·BC·용어 도출
+│  ├─ agents/                # arch-reviewer / test-reviewer / security-reviewer / finding-verifier
+│  ├─ commands/              # /role /board /assign /verify /merge /review-request /contract-change
+│  ├─ rules/                 # 경로별 규칙: architecture / contracts / testing / frontend / docs
+│  └─ hooks/                 # session-context / guard-contracts / guard-git / check-test-count
 ├─ src/
 │  ├─ app/                   # Next.js 라우트 (고객, 어드민, API)
 │  └─ modules/
 │     ├─ shared/
 │     ├─ catalog/  application/  consultation/  reward/  experiment/
 │     │  └─ (domain / application / ports / infra)
-└─ tests/  e2e/  .dependency-cruiser.js
+└─ e2e/  .dependency-cruiser.cjs
 ```
 
 ---
 
 ## 6. 단계별 진행 (마일스톤)
 
-각 기능 단위는 **strategy → (내가 확인) → 새 세션에서 tdd-helper → code-review** 순서로 진행합니다. M0~M3은 한 세션에서 순서대로 진행하고, 계약이 확정된 뒤 M4부터 세션 4개가 git worktree를 나눠 병렬로 작업합니다. 운영 방식은 8절, 실행 순서는 9절에 정리했습니다.
+각 기능 단위는 **strategy → (내가 확인) → 새 세션에서 tdd-helper → domain-review** 순서로 진행합니다. M0~M3은 한 세션에서 순서대로 진행하고, 계약이 확정된 뒤 M4부터 세션 4개가 git worktree를 나눠 병렬로 작업합니다. 운영 방식은 8절, 실행 순서는 9절에 정리했습니다.
 
 | 단계 | 내용 | 산출물 | 연결된 JD 역량 |
 |---|---|---|---|
 | **M0. 기획** | `ajd:planning` 스킬로 페인포인트 발굴, 타깃, 소구점 가설, 성공 지표(접수 전환율), 프로토타입 방향 정의 | Notion PRD, `docs/prd.md`(링크와 요약) | 페인포인트 발굴 |
 | **M1. 화면 설계** | `ajd:design` 스킬로 Notion PRD 기반 화면 흐름과 Before/After 설계, Figma 작업 | Figma 화면, `docs/screens.md` | 화면 설계 |
 | **M2. 도메인 설계** | 이벤트 스토밍, 용어 사전, BC, 정책 목록 확정 | `glossary.md`, `design/`, `decisions/` | 복잡한 서비스 구조화 |
-| **M3. AI 작업 체계** | CLAUDE.md, 스킬 3개, dependency-cruiser 규칙, `npm run check` | `.claude/`, 로컬 검사 통과 | AI 결과물을 잘 다루기 |
+| **M3. AI 작업 체계** | CLAUDE.md, `.claude` 체계 검증, dependency-cruiser 규칙, `npm run check` | `.claude/`, 로컬 검사 통과 | AI 결과물을 잘 다루기 |
 | **M4. 핵심 도메인** | `catalog`, `application`, `reward` 도메인 로직을 TDD로 구현, 이벤트 버스 | 단위 테스트, 아키텍처 테스트 통과 | DB·API 이해 |
 | **M5. 고객 화면** | M1의 Figma 설계대로 랜딩, 요금제 비교, 지원금 계산기, 접수 폼 구현 | 퍼널 E2E 테스트 1개 | 화면 구현 |
 | **M6. 어드민** | 로그인, 접수 목록, 상담·개통·지급 처리 | 상태 전이 E2E 1개 | 어드민·운영 도구 |
@@ -196,7 +201,7 @@ herdr_worktree_practice/
 | `w3:p1` | **Orchestrator** | `main` | PLAN·계약 관리, 작업 배분, 보드 관리, 머지 | 기능 코드 작성 |
 | `w3:p5` | **Builder A** | worktree `feat/a-*` | 담당 BC 구현 (strategy → tdd-helper) | 계약 파일 수정, 다른 BC 수정 |
 | `w3:p6` | **Builder B** | worktree `feat/b-*` | 담당 BC 구현 (strategy → tdd-helper) | 계약 파일 수정, 다른 BC 수정 |
-| `w3:p8` | **Checker** | 리뷰 대상 브랜치 (읽기 전용) | code-review, `npm run check`, 테스트 실행 건수 검증 | 코드 수정 |
+| `w3:p8` | **Checker** | 리뷰 대상 브랜치 (읽기 전용) | domain-review, `npm run check`, 테스트 실행 건수 검증 | 코드 수정 |
 
 ### 8.3 계약 (Contract)과 잠금
 - **계약 파일:** `docs/glossary.md`, `src/modules/shared/events/**`, `src/modules/*/ports/**`
@@ -242,6 +247,7 @@ Orchestrator  결과 확인 → 사용자 승인 → main 머지 → 다른 Buil
 - [x] A1. 프로젝트 폴더 `git init`, `.gitignore`, 첫 커밋 (PLAN과 PDF 포함)
 - [x] A2. `docs/board.md` 골격 작성 (작업 표, 계약 변경 요청 표)
 - [x] A3. `.claude/roles/` 역할 지침 3개 초안 (orchestrator, builder, checker)
+- [x] A4. 루트 `CLAUDE.md`와 `.claude` 체계 초안 (skills, agents, commands, rules, hooks)
 - ⛳ 게이트: 보드 형식과 역할 지침 확인
 
 ### Phase B. M0 기획 — Orchestrator + 사용자
@@ -264,8 +270,8 @@ Orchestrator  결과 확인 → 사용자 승인 → main 머지 → 다른 Buil
 ### Phase E. M3 AI 작업 체계 — Orchestrator 단독
 - [ ] E1. Next.js + TypeScript + Drizzle(SQLite) + Vitest + Playwright 스캐폴딩
 - [ ] E2. dependency-cruiser 규칙과 `npm run check` 스크립트
-- [ ] E3. `.claude/CLAUDE.md`, 스킬 3개 (strategy-checklist, tdd-helper, code-review)
-- [ ] E4. `guard-contracts.sh` 훅 작성, **실제로 계약 파일 수정이 차단되는지 확인**
+- [x] E3. `CLAUDE.md`와 `.claude`(skills, agents, commands, rules, hooks) 초안 — Phase A 확장 때 먼저 작성, 스캐폴딩 후 경로와 명령을 실제 코드에 맞게 보정
+- [ ] E4. 훅 동작 확인: 계약 파일 수정 차단, worktree→main push 차단, 0건 테스트 경고 (모의 입력 테스트는 완료, **실제 세션에서 재확인** 필요)
 - [ ] E5. 일부러 규칙을 어긴 코드로 아키텍처 검사가 실패하는지 확인
 - ⛳ 게이트: **병렬 운영 착수 승인**
 
