@@ -26,7 +26,7 @@
 | T-A3 | A | 역할 지침 3개 초안 | Orchestrator | done | orchestrator / builder / checker 지침 작성 | — | 2026-10-05 사용자 확인 |
 | T-A4 | A | 루트 CLAUDE.md, `.claude` 체계(skills, agents, commands, rules, hooks) | Orchestrator | done | 훅 모의 입력 테스트 통과, 사용자 확인 | — | 2026-10-05 사용자 확인 |
 | T-B1 | B | `ajd:planning`으로 M0 기획, Notion PRD | Orchestrator | done | PRD 승인, `docs/prd.md`에 링크와 요약 | — | 2026-10-05 ⛳ PRD 승인 |
-| T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | todo | 화면 설계 승인, `docs/screens.md` 기록 | — | |
+| T-C1 | C | `ajd:design`으로 M1 화면 설계, Figma | Orchestrator | done | 화면 설계 승인, `docs/screens.md` 기록 | — | 2026-10-05 ⛳ 화면 설계 승인 |
 | T-D1 | D | 이벤트 스토밍, 용어 사전, BC, 정책 확정 | Orchestrator | todo | `docs/glossary.md`, `docs/decisions/` | — | |
 | T-D2 | D | 이벤트·Port 타입 작성, `contract-v1` 태그 | Orchestrator | todo | 타입 검사 통과, 사용자 승인 | — | |
 | T-E1 | E | 스캐폴딩, `npm run check`, `.claude` 경로·명령 보정 | Orchestrator | todo | 훅 차단과 아키텍처 검사 실패를 직접 재현 | — | |
