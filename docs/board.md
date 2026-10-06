@@ -14,8 +14,8 @@
 | 역할 | herdr pane | 에이전트 이름 | 작업 위치 | 상태 |
 |---|---|---|---|---|
 | Orchestrator | `w3:p1` | `orchestrator` | 원본 폴더 | 활성 |
-| Builder A | `w3:p9` | `builder-a` | worktree `contract-t-d1` | T-G3 |
-| Builder B | `w7:p1` | `builder-b` | worktree `feat-b-t-g2` | T-G4 |
+| Builder A | `w3:p9` | `builder-a` | worktree `contract-t-d1` | 대기 |
+| Builder B | `w3:pD` | `builder-b` | worktree `feat-b-t-g2` | 대기 |
 | Checker | `w3:pA` | `checker` | worktree `review-t-d1` (리뷰 대상 브랜치를 맞춰 씀) | 대기 |
 
 ## 작업
@@ -33,8 +33,8 @@
 | T-F1 | F | worktree 생성, 세션 재시작, 시범 작업 1개 | 전체 | done | 작업 한 바퀴(PLAN 8.5) 완주 | — | T-D1로 한 바퀴 완주 |
 | T-G1 | G | M4 `catalog`·`application` 도메인과 유스케이스 (TDD) | Builder A | done | ADR 0001의 C·A 정책을 도메인 테스트로, `npm run check` 통과, Checker PASS | PASS (1차, `6ef271d`) · 실행 168 / 통과 168 | PR #12. 낮음 7건 후속 |
 | T-G2 | G | M4 `reward`·`experiment` 도메인과 유스케이스 (TDD) | Builder B | done | ADR 0001의 R·E 정책을 도메인 테스트로, `npm run check` 통과, Checker PASS | PASS (1차, `3452ae6`) · 실행 44 / 통과 44 | PR #11. 낮음 7건 후속 |
-| T-G3 | G | M5 고객 화면 01~04 (Figma 기준) | Builder A | doing | 퍼널 E2E 1개 통과, Checker PASS | — | T-G1 뒤 |
-| T-G4 | G | M6 상담원 어드민 05 + 로그인 | Builder B | doing | 상태 전이 E2E 1개 통과, Checker PASS | — | T-G2 뒤 |
+| T-G3 | G | M5 고객 화면 01~04 (Figma 기준) | Builder A | done | 퍼널 E2E 1개 통과, Checker PASS | PASS (1차, `2d73123`) · 실행 182 / 통과 182 · E2E 1 / 1 | PR #15(조립), #17. 낮음 14건 후속. composition의 화면용 타입 재노출 허용 |
+| T-G4 | G | M6 상담원 어드민 05 + 로그인 | Builder B | done | 상태 전이 E2E 1개 통과, Checker PASS | PASS (2차, `b8b1d77`) · 실행 205 / 통과 205 · E2E 4 / 4 | PR #16. 2차에서 시크릿·계정을 `.env.local`로 옮김(사용자 지시). 낮음 12건 후속 |
 
 ## 계약 변경 요청
 > 계약 파일: `docs/glossary.md`, `src/modules/shared/events/**`, `src/modules/*/ports/**`
@@ -49,4 +49,5 @@
 |---|---|---|
 | 2026-10-05 | 원격 저장소 `phainestha1/builder-toy`(private) 사용 | 사용자 지정 |
 | 2026-10-05 | M0 기획은 인터뷰를 생략하고 가정 기반 데모 수준으로 진행 | 사용자 지시: 사이클을 끝까지 한 번 돌리는 데 집중 |
+| 2026-10-06 | 결과물 확인을 우선하고, 의미 없는 수준의 후속 작업은 이어가지 않음. 낮음 지적은 모아 두기만 함 | 사용자 지시 |
 | 2026-10-05 | `_docs/PLAN.md`를 최초 기록으로 고정. 진척 기록과 특이사항은 Notion PRD "진행 기록"에 남김 | 사용자 지시 |

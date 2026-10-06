@@ -1,13 +1,10 @@
 {
   "permissions": {
-    "ask": [
-      "Bash(git push:*)",
-      "Bash(git merge:*)",
-      "Bash(git tag:*)",
-      "Bash(git reset --hard:*)"
-    ],
     "deny": [
       "EnterWorktree"
+    ],
+    "ask": [
+      "Bash(git merge:*)"
     ]
   },
   "hooks": {
