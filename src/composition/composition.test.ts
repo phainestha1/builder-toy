@@ -94,9 +94,13 @@ describe("조립 위치 (composition root)", () => {
 
     await activate(app, submitted.applicationId);
 
+    // 시드 v1: 기본 지원금 400,000 + 위약금 보전액 200,000(평균 위약금) = 600,000
+    expect(submitted.estimate.total).toBe(600_000);
     expect(await app.reward.getReward(submitted.applicationId)).toMatchObject({
       status: "Calculated",
-      totalReward: submitted.estimate.total,
+      baseReward: 400_000,
+      feeCoverage: 200_000,
+      totalReward: 600_000,
     });
     expect(app.bus.published.map((e) => e.type)).toEqual([
       "ApplicationSubmitted",
@@ -118,16 +122,27 @@ describe("조립 위치 (composition root)", () => {
   });
 
   it("구독 등록을 두 번 불러도 핸들러는 한 번만 실행된다 (핫 리로드 대비)", async () => {
-    const app = assemble();
-    registerSubscriptions(app.bus, { experiment: app.experiment, reward: app.reward });
-    const handled = vi.spyOn(app.experimentRepository, "saveConversion");
-    const submitted = await submit(app, "v-1", "01012345678", calculatedInput);
-    if (submitted.kind !== "Submitted") throw new Error("접수 실패");
+    const bus = new InMemoryEventBus();
+    const handlers = {
+      experiment: { handleApplicationSubmitted: vi.fn(async () => ({ kind: "Recorded" as const })) },
+      reward: { handleLineActivated: vi.fn(async () => ({ kind: "NotEligible" as const, events: [] as [] })) },
+    };
+    registerSubscriptions(bus, handlers);
+    registerSubscriptions(bus, handlers);
 
-    await activate(app, submitted.applicationId);
+    await bus.publish({
+      type: "ApplicationSubmitted",
+      occurredAt: clock().toISOString(),
+      payload: { applicationId: "app-1", visitorId: "v-1", assignedVariant: "A" },
+    });
+    await bus.publish({
+      type: "LineActivated",
+      occurredAt: clock().toISOString(),
+      payload: { applicationId: "app-1", counselorId: "c-1" },
+    });
 
-    expect(handled).toHaveBeenCalledTimes(1);
-    expect(app.bus.published.filter((e) => e.type === "RewardCalculated")).toHaveLength(1);
+    expect(handlers.experiment.handleApplicationSubmitted).toHaveBeenCalledTimes(1);
+    expect(handlers.reward.handleLineActivated).toHaveBeenCalledTimes(1);
   });
 
   it("싱글턴: 모듈을 다시 평가해도 @/composition은 같은 인스턴스를 준다", async () => {

@@ -5,9 +5,9 @@ import type { CatalogRepository } from "./catalog-repository";
 import { estimateReward, estimateRewardWithVersion, listPlanComparison } from "./catalog-use-cases";
 
 const plans = [
-  createPlan({ id: "plan-500", name: "인터넷 500M", monthlyFee: 33_000 }),
-  createPlan({ id: "plan-1g", name: "인터넷 1G", monthlyFee: 38_500 }),
-  createPlan({ id: "plan-old", name: "인터넷 100M", monthlyFee: 22_000 }),
+  createPlan({ id: "plan-500", name: "인터넷 500M", monthlyFee: 33_000, speed: "500M", includesTv: false }),
+  createPlan({ id: "plan-1g", name: "인터넷 1G", monthlyFee: 38_500, speed: "1G", includesTv: false }),
+  createPlan({ id: "plan-old", name: "인터넷 100M", monthlyFee: 22_000, speed: "100M", includesTv: false }),
 ];
 const v1 = createRateTable({
   version: "v1",
