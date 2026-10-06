@@ -3,7 +3,12 @@
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { redirect } from "next/navigation";
-import { type Counselor, verifyCounselorCredentials } from "@/modules/shared/infra/auth/counselor-accounts";
+import { readNextAuthSecret } from "@/modules/shared/infra/auth/auth-env";
+import {
+  type Counselor,
+  parseCounselorAccounts,
+  verifyCounselorCredentials,
+} from "@/modules/shared/infra/auth/counselor-accounts";
 
 declare module "next-auth" {
   interface Session {
@@ -18,12 +23,10 @@ declare module "next-auth/jwt" {
   }
 }
 
-// 개발 전용 시크릿. NEXTAUTH_SECRET이 없을 때 로컬 개발에서만 쓴다.
-// production에서는 넣지 않는다. 그러면 next-auth가 요청 때 NO_SECRET 오류로 멈춘다.
-const DEV_ONLY_SECRET = "builder-toy-dev-only-secret-do-not-use-in-production";
-
-const secret =
-  process.env.NEXTAUTH_SECRET ?? (process.env.NODE_ENV === "production" ? undefined : DEV_ONLY_SECRET);
+// 시크릿과 상담원 계정은 환경변수에서만 읽는다(.env.local, README "로컬 환경변수").
+// 없거나 형식이 틀리면 무엇을 넣어야 하는지 알려 주며 멈춘다.
+const secret = readNextAuthSecret(process.env);
+const counselorAccounts = parseCounselorAccounts(process.env.COUNSELOR_ACCOUNTS);
 
 export const LOGIN_PATH = "/admin/login";
 
@@ -39,7 +42,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: "비밀번호", type: "password" },
       },
       async authorize(credentials) {
-        const counselor = await verifyCounselorCredentials(credentials?.username ?? "", credentials?.password ?? "");
+        const counselor = await verifyCounselorCredentials(
+          counselorAccounts,
+          credentials?.username ?? "",
+          credentials?.password ?? "",
+        );
         return counselor ? { id: counselor.counselorId, name: counselor.name } : null;
       },
     }),

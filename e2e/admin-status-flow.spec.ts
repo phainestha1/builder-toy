@@ -2,7 +2,17 @@
 // 접수 데이터는 고객 화면을 거치지 않고 테스트 전용 시드 라우트(/admin/e2e-seed)로 만든다.
 import { expect, type Page, test } from "@playwright/test";
 
-async function login(page: Page, username = "counselor1", password = "counselor1-pass") {
+// 로그인 계정은 환경변수에서 읽는다 (.env.local, README "로컬 환경변수")
+function requiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) throw new Error(`${name} 환경변수가 필요합니다. .env.local에 넣어 주세요 (.env.example 참고).`);
+  return value;
+}
+
+const USERNAME = requiredEnv("E2E_COUNSELOR_USERNAME");
+const PASSWORD = requiredEnv("E2E_COUNSELOR_PASSWORD");
+
+async function login(page: Page, username = USERNAME, password = PASSWORD) {
   await page.goto("/admin/login");
   await page.getByLabel("아이디").fill(username);
   await page.getByLabel("비밀번호").fill(password);
@@ -21,7 +31,7 @@ test("로그인하지 않으면 테스트 전용 시드 라우트도 막힌다",
 });
 
 test("비밀번호가 틀리면 로그인되지 않는다", async ({ page }) => {
-  await login(page, "counselor1", "wrong-pass");
+  await login(page, USERNAME, `${PASSWORD}-wrong`);
   await expect(page.getByRole("alert").filter({ hasText: "아이디 또는 비밀번호가 맞지 않아요" })).toBeVisible();
   await page.goto("/admin/applications");
   await expect(page).toHaveURL(/\/admin\/login$/);

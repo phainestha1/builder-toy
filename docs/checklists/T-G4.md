@@ -23,15 +23,15 @@
 | 항목 | 결정 | 근거 |
 |---|---|---|
 | 로그인 위치 | `/admin/login`(보호 밖). 보호 경로는 route group `src/app/admin/(protected)/layout.tsx`에서 세션 확인 | 수정 가능 경로 안에서 해결. `middleware.ts`는 경로 밖이라 쓰지 않음 |
-| 시드 계정 [가정] | `counselor1` / 비밀번호 `counselor1-pass`, 이름 "김상담", `counselorId` = `counselor-1`. 2번째 계정 `counselor2`도 둔다(열람 기록에 누가 봤는지 구분용) | 연습 범위, 계정 관리 화면은 범위 밖 |
-| 비밀번호 저장 | Node `crypto.scrypt` 해시 + `timingSafeEqual`. 새 패키지 없음 | package.json 변경을 피함 |
-| 세션 | JWT 세션, `session.user`에 `counselorId`·이름. `NEXTAUTH_SECRET`이 없으면 개발(`NODE_ENV !== "production"`)에서만 고정 값을 쓴다 [가정]. 이 값은 **개발 전용**이라고 코드 주석에도 적는다. production에서 시크릿이 없으면 오류로 멈춘다 | 로컬 실행만 |
+| 시드 계정 [가정] | `counselor1`(김상담, `counselor-1`), `counselor2`(이상담, `counselor-2`). 계정과 해시는 환경변수 `COUNSELOR_ACCOUNTS`에만 둔다(2026-10-06 추가 수정) | 연습 범위, 계정 관리 화면은 범위 밖. 민감 정보는 저장소 밖 |
+| 비밀번호 저장 | Node `crypto.scrypt` 해시(`salt:hash`) + `timingSafeEqual`. 해시는 `npm run hash-password`로 만든다 | 새 패키지 없음 |
+| 세션 | JWT 세션, `session.user`에 `counselorId`·이름. `NEXTAUTH_SECRET`은 환경변수에서만 읽고, 없거나 32자 미만이면 변수 이름을 알려 주며 멈춘다(개발용 대체 값 없음) | 2026-10-06 추가 수정 |
 | `counselorId` 전달 | 서버 액션이 `requireCounselor()`(composition/auth.ts)로 세션에서 꺼내 유스케이스 인자로 넘김. 폼으로 받은 `counselorId`는 쓰지 않음 | ADR 0001, architecture.md |
 | 버튼 활성 규칙 | 화면 표시용 `availableActions(status, rewardStatus)`를 `src/app/admin/(protected)/_lib/`에 둠. 최종 판단은 유스케이스(A6, R5)가 하고, 화면은 거절 결과를 메시지로 보여 줌 | 정책은 도메인에, 화면은 표시만 |
 | 개통 전 취소 | 지원금 영역에 "개통 전 취소로 지원금 없음", 지급 버튼 숨김 | screens.md 예외 |
 | 번호 [보기] | 서버 액션 `revealPhoneNumber` 호출 결과를 그 상세 패널에만 표시. 새로고침하면 다시 가림 | A8 |
 | 화면 문구 | glossary 용어(접수, 상담중, 개통완료, 취소, 지원금, 산정됨, 지급완료, 산정 대상 아님). 상태 값 → 한국어 표시는 화면의 라벨 표 하나로 | glossary |
-| E2E 데이터 | 테스트 전용 라우트 `src/app/admin/(protected)/e2e-seed/route.ts`(POST): 로그인 세션 필요 + `NODE_ENV !== "production"`일 때만 동작. `application`의 `submitApplication` 유스케이스로 접수 1건을 만든다(고유한 전화번호, 계산 입력 포함 → 스냅샷 있음) | 고객 화면(A 작업)에 의존하지 않음. 실제 유스케이스를 거쳐 이벤트도 정상 발행 |
+| E2E 데이터 | 테스트 전용 라우트 `src/app/admin/(protected)/e2e-seed/route.ts`(POST): 로그인 세션 + `NODE_ENV !== "production"` + `E2E_SEED_ENABLED=1`일 때만 동작(playwright가 E2E 서버에만 넘김). E2E 로그인 계정은 `E2E_COUNSELOR_USERNAME`·`E2E_COUNSELOR_PASSWORD`. `application`의 `submitApplication` 유스케이스로 접수 1건을 만든다(고유한 전화번호, 계산 입력 포함 → 스냅샷 있음) | 고객 화면(A 작업)에 의존하지 않음. 실제 유스케이스를 거쳐 이벤트도 정상 발행 |
 | 요금제 이름 | 목록의 "요금제"는 스냅샷의 `planId`로 `catalog` 조회 유스케이스에서 이름을 찾는다. A의 조립에 catalog 조회가 없으면 `planId` 그대로 표시 | src/app은 application 유스케이스만 호출 |
 | 확인 | 2026-10-05 Orchestrator가 가정 (1)~(5) 모두 승인 | — |
 | Figma 05 반영 (5:21) | 메뉴 아래 "상담원 김상담 · 로그아웃", 탭에 건수("전체 24"), 검색 "이름·전화번호 뒷자리 검색"(4자리 숫자면 전화번호 뒷자리, 아니면 이름), 접수일 MM/DD(한국 시간), 금액 "58만 원", 상태 뱃지. 상세는 고객·전화번호[보기]·요금제·남은 약정·설치 희망 지역·상담 희망 시간·실험 변형("B · 위약금 보전") 행, 버튼 [상담 시작][취소][개통 완료 처리], 지원금은 예상 지원금·지급 상태·[지급 완료 처리] | Orchestrator 요청 (2026-10-05) |
@@ -40,15 +40,19 @@
 
 ## 테스트 케이스
 단위 (Vitest, `src/modules/shared/infra/auth/*.test.ts`)
-- 맞는 아이디·비밀번호 → `{ counselorId: "counselor-1", name: "김상담" }`
+- 맞는 아이디·비밀번호 → 상담원 `{ counselorId, name }` (계정은 테스트 안에서 해시로 만든 픽스처)
 - 비밀번호 틀림 → `null`
 - 없는 아이디 → `null`
 - 빈 아이디/빈 비밀번호 → `null`
+- `hashPassword` → `salt:hash` 형식, 같은 비밀번호도 매번 다른 salt
+- `COUNSELOR_ACCOUNTS` 없음·빈 값·JSON 아님·빈 배열·필드 누락·해시 형식 틀림·아이디 중복 → 변수 이름을 담은 오류
+- `NEXTAUTH_SECRET` 없음·공백·32자 미만 → 변수 이름을 담은 오류
 
 단위 (Vitest, 시드 라우트 허용 판단 `isE2eSeedAllowed`)
 - `NODE_ENV=production` → 세션이 있어도 거절 (Orchestrator 요청: production 차단을 한 번 확인)
 - 개발 + 세션 없음 → 거절
-- 개발 + 세션 있음 → 허용
+- 개발 + 세션 있음 + `E2E_SEED_ENABLED=1` → 허용
+- `E2E_SEED_ENABLED`가 없거나 `1`이 아님 → 거절
 
 단위 (Vitest, `availableActions`)
 - `접수` → 상담 시작·취소 활성, 개통 완료 비활성

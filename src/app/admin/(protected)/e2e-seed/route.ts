@@ -1,5 +1,5 @@
 // 테스트 전용 시드 라우트 (T-G4 E2E). 고객 화면을 거치지 않고 `application` 유스케이스로 접수 1건을 만든다.
-// production이 아니고 로그인한 상담원일 때만 동작한다. 그 밖에는 404.
+// production이 아니고, E2E_SEED_ENABLED=1이고, 로그인한 상담원일 때만 동작한다. 그 밖에는 404.
 import { NextResponse } from "next/server";
 import { application } from "@/composition";
 import { getCounselor } from "@/composition/auth";
@@ -7,7 +7,7 @@ import { isE2eSeedAllowed } from "./seed-guard";
 
 export async function POST() {
   const counselor = await getCounselor();
-  if (!isE2eSeedAllowed({ nodeEnv: process.env.NODE_ENV, loggedIn: counselor !== null })) {
+  if (!isE2eSeedAllowed({ env: process.env, loggedIn: counselor !== null })) {
     return new NextResponse(null, { status: 404 });
   }
 

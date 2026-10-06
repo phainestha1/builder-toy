@@ -13,7 +13,8 @@
     "arch": "depcruise src --config .dependency-cruiser.cjs",
     "check": "npm run typecheck && npm run lint && npm run test && npm run arch",
     "db:generate": "drizzle-kit generate",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "hash-password": "node scripts/hash-password.mjs"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
