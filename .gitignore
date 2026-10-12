@@ -1,0 +1,19 @@
+# 언어 중립 최소 항목만 둔다.
+# 언어·도구별 항목(node_modules/, __pycache__/, target/, dist/, coverage/ 등)은 프로젝트에 맞게 아래에 추가한다.
+
+# env
+.env
+.env.*
+!.env.example
+
+# worktrees
+.worktrees/
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/
+
+# claude 로컬 설정과 상태 (인계 메모 등)
+.claude/settings.local.json
+.claude/state/
