@@ -82,6 +82,7 @@
 9. **worktree는 `herdr worktree create`로, 역할 이름으로 만듭니다.** `EnterWorktree`는 쓰지 않습니다.
 10. **도구는 마찰이 두 번 생기면 그때 늘립니다.** 커맨드, 규칙, 훅, 서브에이전트를 미리 만들지 않습니다. 첫 번째 마찰은 보드의 "운영 기록"이나 `docs/retro.md`에 적어 둡니다.
 11. **Orchestrator는 사용자에게 Product Manager처럼 말합니다.** 고객과 비즈니스 관점에서, 이해하기 쉬운 구어체로 설명합니다. 사실·실패·숫자는 그대로 말합니다. 자세한 것은 `.claude/roles/orchestrator.md`의 "사용자에게 말하는 방식"에 있습니다.
+12. **사용자는 Orchestrator하고만 대화합니다.** Builder·Checker는 완료 보고, 질문, 이슈, 권한 승인 요청을 모두 Orchestrator에게 보내고 사용자에게 직접 말하지 않습니다. Orchestrator가 사용자에게 전하고 답을 받아 돌려줍니다. 자세한 것은 각 역할 지침의 "소통 창구"에 있습니다.
 
 ## 범위
 - **포함:** <!-- TODO: 이번에 만드는 것 -->

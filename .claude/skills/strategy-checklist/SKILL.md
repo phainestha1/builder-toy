@@ -38,7 +38,7 @@ description: 배정받은 작업(T-xx)을 구현하기 전에 설계 체크리�
 
 ## 4. 멈추기
 체크리스트를 저장하면 **여기서 멈춥니다.** 구현으로 넘어가지 않습니다.
-- Orchestrator(또는 사용자)에게 체크리스트 경로를 알리고 확인을 기다립니다.
+- Orchestrator에게 체크리스트 경로를 알리고 확인을 기다립니다.
   ```bash
   herdr agent prompt orchestrator "<작업ID> 체크리스트 완성: docs/checklists/<작업ID>.md"
   ```
