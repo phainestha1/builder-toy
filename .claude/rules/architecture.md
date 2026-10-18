@@ -10,7 +10,7 @@ paths:
 경계 규칙은 경계 검사 도구(예: dependency-cruiser, import-linter, ArchUnit)로 검사하고, 검사 명령(`CHECK_CMD`, `.claude/project.conf`)에 넣어 둡니다.
 
 ## 구역 목록
-<!-- TODO: contract-design 스킬로 정한 구역을 적습니다. 결정은 docs/decisions/0001-*.md -->
+<!-- TODO: contract-design 스킬로 정한 구역을 적습니다. 결정은 docs/decisions/의 contract-design 결정 -->
 | 구역 | 책임 |
 |---|---|
 | `<구역>` | <!-- TODO --> |

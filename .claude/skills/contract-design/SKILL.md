@@ -38,7 +38,7 @@ description: 기획(docs/prd.md)과 화면(docs/screens.md)을 바탕으로 계�
 ## 4. 산출물 (사용자 승인 전에는 초안)
 - `docs/glossary.md`: 용어, 영문 표기, 정의, 쓰지 않는 말
 - `docs/design/contract-design.md`: 타임라인, 대안, 논의 (사람이 읽는 기록)
-- `docs/decisions/0001-<제목>.md`: 확정한 구역과 책임, 구역 사이 연결, 정책 (`docs/decisions/0000-template.md` 형식)
+- `docs/decisions/<다음 번호>-<제목>.md` (이미 쓴 번호 다음): 확정한 구역과 책임, 구역 사이 연결, 정책 (`docs/decisions/0000-template.md` 형식)
 - 계약 코드 파일(`.claude/project.conf`의 `CONTRACT_PATTERNS`, 기본값: `src/modules/shared/events/*`, `src/modules/*/ports/*`): 타입만 작성. 코드 뼈대가 아직 없으면 다음 작업으로 넘깁니다.
 
 ## 5. 검증과 승인 (최대 2차)
