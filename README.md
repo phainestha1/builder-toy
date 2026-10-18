@@ -55,14 +55,29 @@ Claude Code 세션 4개가 역할을 나눠 한 저장소를 함께 만드는 �
    정확한 인자는 `herdr --help`로 확인합니다. herdr가 없으면 `git worktree add`로 만들고, 메시지는 SendMessage로 보냅니다.
 8. **첫 사이클 (`T-04`).** 작은 작업 하나로 `/assign` → `strategy-checklist` → `tdd-helper` → `/review-request` → `/verify` → `/merge` → `/handoff`를 끝까지 돌립니다. 걸린 시간과 막힌 곳을 보드의 "운영 기록"과 `docs/retro.md`에 적습니다.
 
+## 하네스 고치기와 받아 가기
+하네스(`.claude/`의 지침·커맨드·스킬·훅, `scripts/test-hooks.sh`, `scripts/reset-session.sh`, `CLAUDE.md`)는 **이 템플릿에서만 고칩니다.** 프로젝트에서 쓰다가 나온 개선도 여기로 가져와 PR로 반영합니다. 프로젝트는 `scripts/sync-harness.sh`로 받아 갑니다.
+
+```bash
+# 이 템플릿 폴더에서 (main 최신으로)
+bash scripts/sync-harness.sh <프로젝트 폴더> --dry-run              # 무엇이 바뀌는지만 봄
+bash scripts/sync-harness.sh <프로젝트 폴더>                        # 적용
+bash scripts/sync-harness.sh <프로젝트 폴더> --base <템플릿 커밋>   # 처음 받을 때 (복사해 온 커밋)
+```
+- 마지막으로 받은 커밋부터 지금까지의 변경만 패치로 적용합니다. 프로젝트가 고친 곳(이름, Builder 수 등)은 그대로 둡니다.
+- 받은 커밋은 프로젝트의 `.claude/harness.lock`에 적힙니다. `project.conf`, `settings.local.json`, `state/`, `docs/`는 건드리지 않습니다.
+- 충돌한 파일은 `<파일>.rej`로 남습니다 (종료 코드 4). 손으로 맞추고 `.rej`를 지웁니다. 프로젝트가 같은 개선을 이미 다른 말로 갖고 있으면 `.rej`만 지우면 됩니다.
+- 결과는 프로젝트의 `chore/harness-sync` 같은 브랜치에서 커밋하고 PR로 반영합니다. 스크립트는 커밋하지 않습니다.
+
 ## 폴더 지도
 ```
 CLAUDE.md                 세션이 처음 읽는 규칙 (진실의 원천 표, 역할, 브랜치, 반드시 지킬 것)
 .claude/
 ├─ project.conf           프로젝트별 설정 (검사 명령, 계약 파일 목록 등)
+├─ harness.lock           프로젝트에만 생김. 마지막으로 받은 템플릿 커밋 (sync-harness.sh가 씀)
 ├─ settings.json          훅 연결
 ├─ roles/                 orchestrator · builder · checker 지침
-├─ commands/              /role /board /assign /verify /merge /review-request /contract-change /handoff
+├─ commands/              /role /board /assign /verify /merge /review-request /contract-change /handoff /new-session
 ├─ skills/                strategy-checklist · tdd-helper · domain-review · contract-design
 ├─ agents/                arch-reviewer · security-reviewer · finding-verifier
 ├─ rules/                 architecture · contracts · testing · docs (경로별 규칙)
@@ -77,6 +92,7 @@ docs/
 ├─ design/                사람이 읽는 논의와 대안
 └─ retro.md               측정 항목과 회고
 scripts/test-hooks.sh     훅 자체 검사
+scripts/sync-harness.sh   템플릿의 하네스 변경을 프로젝트로 보냄 (템플릿에서만 실행)
 scripts/reset-session.sh  세션 비우기 (/clear → 이름 다시 붙이기 → /role). 종료 코드 0 완료 / 1 대상·이름 확인 실패 / 2 herdr 없음 / 3 blocked·시간 초과
 ```
 
