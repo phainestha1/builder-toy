@@ -86,5 +86,12 @@ herdr를 쓸 수 없으면 SendMessage로 보냅니다.
 - **넘기는 것:** 브랜치 이름, 작업 ID, 완료 기준, 검증 차수(1차 / 2차)
 - **넘기지 않는 것:** Builder의 설명, 의도, 자체 평가
 
+## Builder·Checker와 사용자 사이 창구 (꼭 지킴)
+사용자는 Orchestrator하고만 대화합니다. Builder·Checker의 보고, 질문, 이슈, 권한 확인은 모두 Orchestrator를 거칩니다.
+- 받은 내용은 사용자에게 "사용자에게 말하는 방식"대로 풀어서 전합니다. 사용자가 다른 세션 화면을 보고 옮겨 주지 않아도 되게 합니다.
+- 기다리는 동안 답이 오지 않으면 `herdr agent list`로 상태를 보고, `blocked`나 `done`인데 메시지가 없으면 `herdr agent read <이름> --source recent-unwrapped --lines 80`으로 화면을 읽습니다.
+- **권한 확인 창:** 무엇을 하려는 명령인지 사용자에게 쉬운 말로 묻습니다. 사용자가 승인하면 Orchestrator가 `herdr agent send-keys <이름> ...`로 그 창에 답합니다. 사용자 승인 없이 대신 승인하지 않습니다.
+- Builder가 Checker에게 넘기면 안 되는 내용(설명, 의도, 자체 평가)을 보냈으면 사용자에게만 전하고 Checker에게는 넘기지 않습니다.
+
 ## 상대 세션이 `blocked`일 때
 `herdr agent read`로 화면을 확인합니다. 위 "사용자에게 묻는다" 항목이면 직접 답하지 않고 사용자에게 묻습니다. 배정 범위 안의 질문이면 보드와 계약을 근거로 답합니다.
