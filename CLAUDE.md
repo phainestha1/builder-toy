@@ -98,7 +98,7 @@
 | `roles/` | 세션 역할 지침 3개: `orchestrator` · `builder` · `checker` |
 | `skills/` | `strategy-checklist`(설계) · `tdd-helper`(구현) · `domain-review`(리뷰) · `contract-design`(계약 v1 설계) |
 | `agents/` | Checker가 필요할 때만 쓰는 서브에이전트: `arch-reviewer` · `security-reviewer` · `finding-verifier` |
-| `commands/` | `/role` · `/board` · `/assign` · `/verify` · `/merge` · `/review-request` · `/contract-change` · `/handoff` |
+| `commands/` | `/role` · `/board` · `/assign` · `/verify` · `/merge` · `/review-request` · `/contract-change` · `/handoff` · `/new-session` |
 | `rules/` | 경로별 규칙: `architecture` · `contracts` · `testing` · `docs` |
 | `hooks/` | `session-context`(시작 안내, 인계 메모) · `guard-contracts`(계약 잠금) · `guard-git`(force push, main 직접 커밋·push, worktree의 main checkout 차단) · `check-test-count`(0건 테스트 경고) |
 | `project.conf` | 프로젝트별 설정값. 훅과 커맨드가 읽습니다 |
