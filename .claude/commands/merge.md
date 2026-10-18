@@ -17,8 +17,10 @@ Orchestrator만 실행합니다. 원본 폴더(worktree가 아닌 곳)에서 실
    - 사용자가 머지를 승인함
 2. **머지합니다.** merge commit 방식만 씁니다.
    ```bash
-   gh pr merge <PR> --merge --delete-branch
+   gh pr merge <PR> --merge
+   git push origin --delete <PR의 브랜치>
    ```
+   `--delete-branch`는 쓰지 않습니다. 그 브랜치를 체크아웃한 Builder worktree가 있으면 gh가 로컬 브랜치를 지우면서 worktree 폴더까지 없앱니다. 원격 브랜치만 지우고, 로컬 브랜치는 Builder가 다음 작업 브랜치로 바꾼 뒤 남겨 둡니다.
 3. **로컬 main을 갱신합니다.**
    ```bash
    git switch main && git pull --ff-only
